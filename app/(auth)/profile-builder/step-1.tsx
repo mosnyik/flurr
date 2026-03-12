@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ScreenContainer } from '@/components/layout/screen-container';
 import { ScreenFooter } from '@/components/layout/screen-footer';
@@ -24,13 +24,18 @@ export default function Step1Screen() {
     setPronouns(pronouns.filter((_, i) => i !== index));
   };
 
-  const isValid = name.trim().length > 0;
+  const isValid = name.trim().length > 0 && pronouns.length > 0;
 
   return (
     <ScreenContainer>
       <ProgressHeader currentStep={1} totalSteps={3} />
 
-      <View style={styles.content}>
+      <ScrollView
+        style={styles.content}
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
         <Text style={styles.title}>what's ur name & pronouns</Text>
         <Text style={styles.subtitle}>this is how we'll intro u to ur match.</Text>
 
@@ -49,8 +54,10 @@ export default function Step1Screen() {
           onRemoveChip={handleRemovePronoun}
           placeholder="e.g. they, she, he"
           maxChips={3}
+          minChipLength={2}
+          maxChipLength={4}
         />
-      </View>
+      </ScrollView>
 
       <ScreenFooter
         primaryLabel="continue"
@@ -65,6 +72,9 @@ export default function Step1Screen() {
 const styles = StyleSheet.create({
   content: {
     flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: Spacing.xl,
   },
   title: {
     ...Typography.titleLarge,

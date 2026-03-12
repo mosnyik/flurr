@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,6 +7,7 @@ import {
   TextInputProps,
   ViewStyle,
   StyleProp,
+  Animated,
 } from 'react-native';
 import { FlurrColors, BorderRadius, Typography, Spacing, Shadows } from '@/constants/theme';
 
@@ -20,13 +21,51 @@ export function Input({
   label,
   error,
   containerStyle,
+  value,
+  onFocus,
+  onBlur,
   ...props
 }: InputProps) {
   const [isFocused, setIsFocused] = useState(false);
+  const animatedValue = useRef(new Animated.Value(value ? 1 : 0)).current;
+
+  const isActive = isFocused || !!value;
+
+  useEffect(() => {
+    Animated.timing(animatedValue, {
+      toValue: isActive ? 1 : 0,
+      duration: 150,
+      useNativeDriver: false,
+    }).start();
+  }, [isActive, animatedValue]);
+
+  const labelStyle = {
+    top: animatedValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [18, 8],
+    }),
+    fontSize: animatedValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [16, 12],
+    }),
+    color: animatedValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [FlurrColors.lightGray, FlurrColors.gray],
+    }),
+  };
+
+  const handleFocus = (e: any) => {
+    setIsFocused(true);
+    onFocus?.(e);
+  };
+
+  const handleBlur = (e: any) => {
+    setIsFocused(false);
+    onBlur?.(e);
+  };
 
   return (
     <View style={[styles.container, containerStyle]}>
-      {label && <Text style={styles.label}>{label}</Text>}
       <View
         style={[
           styles.inputWrapper,
@@ -34,12 +73,19 @@ export function Input({
           error && styles.inputError,
         ]}
       >
+        {label && (
+          <Animated.Text style={[styles.label, labelStyle]}>
+            {label}
+          </Animated.Text>
+        )}
         <TextInput
-          style={styles.input}
+          style={[styles.input, label && styles.inputWithLabel]}
           placeholderTextColor={FlurrColors.lightGray}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          value={value}
           {...props}
+          placeholder={isActive ? props.placeholder : undefined}
         />
       </View>
       {error && <Text style={styles.errorText}>{error}</Text>}
@@ -51,15 +97,12 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: Spacing.md,
   },
-  label: {
-    ...Typography.label,
-    marginBottom: Spacing.xs,
-  },
   inputWrapper: {
     backgroundColor: FlurrColors.white,
     borderRadius: BorderRadius.md,
     borderWidth: 1,
     borderColor: 'transparent',
+    position: 'relative',
     ...Shadows.card,
   },
   inputFocused: {
@@ -68,11 +111,19 @@ const styles = StyleSheet.create({
   inputError: {
     borderColor: FlurrColors.coral,
   },
+  label: {
+    position: 'absolute',
+    left: Spacing.md,
+    fontWeight: '500',
+  },
   input: {
     ...Typography.bodyMedium,
     height: 56,
     paddingHorizontal: Spacing.md,
     color: FlurrColors.black,
+  },
+  inputWithLabel: {
+    paddingTop: 18,
   },
   errorText: {
     ...Typography.bodySmall,
