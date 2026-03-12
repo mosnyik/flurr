@@ -18,7 +18,7 @@ export function SelectionCard({
   iconName,
   label,
   selected = false,
-  showCheckmark = true,
+  showCheckmark = false,
   onPress,
   style,
 }: SelectionCardProps) {
@@ -28,16 +28,18 @@ export function SelectionCard({
       onPress={onPress}
       activeOpacity={0.8}
     >
-      <View style={styles.iconContainer}>
-        {icon || (iconName && (
-          <Ionicons
-            name={iconName}
-            size={24}
-            color={FlurrColors.black}
-          />
-        ))}
-      </View>
-      <Text style={[styles.label, selected ? styles.labelSelected : styles.labelUnselected]}>
+      {(icon || iconName) && (
+        <View style={styles.iconContainer}>
+          {icon || (iconName && (
+            <Ionicons
+              name={iconName}
+              size={24}
+              color={FlurrColors.black}
+            />
+          ))}
+        </View>
+      )}
+      <Text style={styles.label}>
         {label}
       </Text>
       {selected && showCheckmark && (
@@ -56,23 +58,21 @@ const styles = StyleSheet.create({
     padding: Spacing.md,
     borderWidth: 2,
     borderColor: 'transparent',
+    minHeight: 100,
+    justifyContent: 'space-between',
     ...Shadows.card,
   },
   selected: {
     borderColor: FlurrColors.black,
   },
   iconContainer: {
-    marginBottom: Spacing.sm,
+    alignSelf: 'flex-end',
   },
   label: {
     fontSize: 16,
     fontWeight: '500',
-  },
-  labelSelected: {
+    alignSelf: 'flex-start',
     color: FlurrColors.black,
-  },
-  labelUnselected: {
-    color: 'rgba(0, 0, 0, 0.42)',
   },
   checkmark: {
     position: 'absolute',

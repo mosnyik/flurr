@@ -1,20 +1,28 @@
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ScreenContainer } from '@/components/layout/screen-container';
 import { ScreenFooter } from '@/components/layout/screen-footer';
 import { ProgressHeader } from '@/components/layout/progress-header';
 import { SelectionCard } from '@/components/ui/selection-card';
-import { Typography, Spacing } from '@/constants/theme';
+import { Typography, Spacing, FlurrColors } from '@/constants/theme';
 import { useUserStore, MatchPreference } from '@/store';
 
-const OPTIONS: { id: MatchPreference; label: string; icon: keyof typeof Ionicons.glyphMap }[] = [
+const OPTIONS: { id: MatchPreference; label: string; icon?: keyof typeof Ionicons.glyphMap; customIcon?: React.ReactNode }[] = [
   { id: 'romantic-partner', label: 'Romantic partner', icon: 'heart-outline' },
-  { id: 'open-to-exploring', label: 'Open to exploring', icon: 'chatbubble-outline' },
-  { id: 'relationship', label: 'Relationship', icon: 'people-outline' },
+  {
+    id: 'open-to-exploring',
+    label: 'Open to exploring',
+    customIcon: <Ionicons name="leaf-outline" size={24} color={FlurrColors.black} style={{ transform: [{ scaleX: -1 }] }} />
+  },
+  { id: 'relationship', label: 'Relationship', icon: 'lock-closed-outline' },
   { id: 'someone-to-go-out-with', label: 'Someone to go out w/', icon: 'wine-outline' },
-  { id: 'a-good-time', label: 'A good time', icon: 'happy-outline' },
-  { id: 'new-bestie', label: 'A new bestie', icon: 'person-add-outline' },
+  {
+    id: 'a-good-time',
+    label: 'A good time',
+    customIcon: <MaterialCommunityIcons name="emoticon-kiss-outline" size={24} color={FlurrColors.black} />
+  },
+  { id: 'new-bestie', label: 'A new bestie', icon: 'people-outline' },
 ];
 
 export default function Step4Screen() {
@@ -44,6 +52,7 @@ export default function Step4Screen() {
               key={option.id}
               label={option.label}
               iconName={option.icon}
+              icon={option.customIcon}
               selected={matchPreferences.includes(option.id)}
               onPress={() => toggleSelection(option.id)}
               style={styles.card}
