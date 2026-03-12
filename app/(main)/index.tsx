@@ -36,6 +36,7 @@ export default function HomeScreen() {
               pronouns={match.user.pronouns}
               interests={match.user.traits}
               compatibility={match.compatibility}
+              imageUrl={match.user.imageUrl}
             />
           ))}
         </View>

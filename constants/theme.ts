@@ -26,6 +26,16 @@ export const FlurrColors = {
 
   // States
   disabled: '#CCCCCC',
+
+  // Neutrals (with opacity)
+  neutral5: 'rgba(0, 0, 0, 0.05)',
+  neutral20: 'rgba(0, 0, 0, 0.2)',
+  neutral45: 'rgba(0, 0, 0, 0.42)',
+  white20: 'rgba(255, 255, 255, 0.3)',
+  white60: 'rgba(255, 255, 255, 0.6)',
+  cream20: 'rgba(245, 242, 238, 0.3)',
+  cream60: 'rgba(245, 242, 238, 0.6)',
+  cream80: 'rgba(245, 242, 238, 0.9)',
 };
 
 // Spacing scale
@@ -43,7 +53,8 @@ export const BorderRadius = {
   sm: 8,
   md: 12,
   lg: 16,
-  xl: 24,
+  xl: 18,
+  xxl: 24,
   full: 9999,
 };
 
