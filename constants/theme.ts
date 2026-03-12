@@ -1,41 +1,78 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * Flurr Design System - Colors, Typography, Spacing
  */
 
-import { Platform } from 'react-native';
+import { Platform, TextStyle } from 'react-native';
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+// Flurr Brand Colors
+export const FlurrColors = {
+  // Backgrounds
+  cream: '#F5F2EE',
+  white: '#FFFFFF',
 
-export const Colors = {
-  light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+  // Text
+  black: '#1A1A1A',
+  darkGray: '#333333',
+  gray: '#666666',
+  lightGray: '#999999',
+
+  // Accent
+  coral: '#E85A6B',
+
+  // UI Elements
+  cardBorder: '#E5E5E5',
+  inputBorder: '#D9D9D9',
+  chipBackground: '#F0F0F0',
+
+  // States
+  disabled: '#CCCCCC',
+};
+
+// Spacing scale
+export const Spacing = {
+  xs: 4,
+  sm: 8,
+  md: 16,
+  lg: 24,
+  xl: 32,
+  xxl: 48,
+};
+
+// Border radius
+export const BorderRadius = {
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 24,
+  full: 9999,
+};
+
+// Shadows
+export const Shadows = {
+  card: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 3,
   },
-  dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
-  },
+};
+
+// Custom fonts (loaded in _layout.tsx)
+export const CustomFonts = {
+  benguiatBook: 'Benguiat-Book',
+  benguiatBookItalic: 'Benguiat-BookItalic',
+  benguiatMedium: 'Benguiat-Medium',
+  benguiatMediumItalic: 'Benguiat-MediumItalic',
+  benguiatBold: 'Benguiat-Bold',
+  benguiatBoldItalic: 'Benguiat-BoldItalic',
 };
 
 export const Fonts = Platform.select({
   ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
     sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
     serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
     rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
     mono: 'ui-monospace',
   },
   default: {
@@ -51,3 +88,79 @@ export const Fonts = Platform.select({
     mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
   },
 });
+
+// Typography styles
+export const Typography: Record<string, TextStyle> = {
+  titleLarge: {
+    fontFamily: CustomFonts.benguiatBoldItalic,
+    fontSize: 28,
+    lineHeight: 36,
+    color: FlurrColors.black,
+  },
+  titleMedium: {
+    fontFamily: CustomFonts.benguiatBoldItalic,
+    fontSize: 24,
+    lineHeight: 32,
+    color: FlurrColors.black,
+  },
+  titleBold: {
+    fontFamily: CustomFonts.benguiatBold,
+    fontSize: 28,
+    lineHeight: 36,
+    color: FlurrColors.black,
+  },
+  bodyLarge: {
+    fontFamily: Fonts?.sans,
+    fontSize: 18,
+    fontWeight: '400',
+    lineHeight: 26,
+    color: FlurrColors.black,
+  },
+  bodyMedium: {
+    fontFamily: Fonts?.sans,
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 24,
+    color: FlurrColors.black,
+  },
+  bodySmall: {
+    fontFamily: Fonts?.sans,
+    fontSize: 14,
+    fontWeight: '400',
+    lineHeight: 20,
+    color: FlurrColors.gray,
+  },
+  label: {
+    fontFamily: Fonts?.sans,
+    fontSize: 12,
+    fontWeight: '500',
+    lineHeight: 16,
+    color: FlurrColors.gray,
+  },
+  button: {
+    fontFamily: Fonts?.sans,
+    fontSize: 16,
+    fontWeight: '600',
+    lineHeight: 24,
+  },
+};
+
+// Legacy Colors export for compatibility
+export const Colors = {
+  light: {
+    text: FlurrColors.black,
+    background: FlurrColors.cream,
+    tint: FlurrColors.coral,
+    icon: FlurrColors.gray,
+    tabIconDefault: FlurrColors.lightGray,
+    tabIconSelected: FlurrColors.black,
+  },
+  dark: {
+    text: '#ECEDEE',
+    background: '#151718',
+    tint: '#fff',
+    icon: '#9BA1A6',
+    tabIconDefault: '#9BA1A6',
+    tabIconSelected: '#fff',
+  },
+};
