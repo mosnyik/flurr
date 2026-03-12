@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ScreenContainer } from '@/components/layout/screen-container';
@@ -7,10 +7,23 @@ import { OTPInput } from '@/components/ui/otp-input';
 import { TextLink } from '@/components/ui/text-link';
 import { FlurrColors, Typography, Spacing } from '@/constants/theme';
 
+const COUNTDOWN_SECONDS = 10;
+
 export default function VerifyScreen() {
   const router = useRouter();
   const [code, setCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [countdown, setCountdown] = useState(COUNTDOWN_SECONDS);
+
+  useEffect(() => {
+    if (countdown <= 0) return;
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [countdown]);
 
   const handleVerify = async () => {
     if (code.length === 4) {
@@ -22,10 +35,11 @@ export default function VerifyScreen() {
     }
   };
 
-  const handleResendCode = () => {
+  const handleResendCode = useCallback(() => {
     // Handle resend logic
     setCode('');
-  };
+    setCountdown(COUNTDOWN_SECONDS);
+  }, []);
 
   return (
     <ScreenContainer>
@@ -42,9 +56,13 @@ export default function VerifyScreen() {
           />
         </View>
 
-        <TextLink variant="coral" onPress={handleResendCode}>
-          Resend code
-        </TextLink>
+        {countdown > 0 ? (
+          <Text style={styles.countdown}>Resend code in {countdown}s</Text>
+        ) : (
+          <TextLink variant="coral" onPress={handleResendCode}>
+            Resend code
+          </TextLink>
+        )}
       </View>
 
       <ScreenFooter
@@ -73,5 +91,9 @@ const styles = StyleSheet.create({
   label: {
     ...Typography.label,
     marginBottom: Spacing.sm,
+  },
+  countdown: {
+    ...Typography.bodyMedium,
+    color: FlurrColors.gray,
   },
 });

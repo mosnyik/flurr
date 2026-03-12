@@ -3,6 +3,7 @@ import {
   StyleSheet,
   View,
   TextInput,
+  Keyboard,
   NativeSyntheticEvent,
   TextInputKeyPressEventData,
 } from 'react-native';
@@ -39,8 +40,9 @@ export function OTPInput({
       inputRefs.current[index + 1]?.focus();
     }
 
-    if (trimmedValue.length === length && onComplete) {
-      onComplete(trimmedValue);
+    if (trimmedValue.length === length) {
+      Keyboard.dismiss();
+      onComplete?.(trimmedValue);
     }
   };
 
