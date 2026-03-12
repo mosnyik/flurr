@@ -1,6 +1,7 @@
 import { MockUser } from "./types";
 
 export const MOCK_USERS: MockUser[] = [
+  // Serious relationship seeker (converges toward commitment)
   {
     id: "1",
     name: "TRACEY",
@@ -8,7 +9,7 @@ export const MOCK_USERS: MockUser[] = [
     imageUrl:
       "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&h=200&fit=crop&crop=face",
     intention: "matchmaking",
-    matchPreferences: ["romantic-partner", "relationship"],
+    matchPreferences: ["romantic-partner", "relationship", "open-to-exploring"],
     era: 2,
     traits: [
       "prefers 1:1",
@@ -18,6 +19,7 @@ export const MOCK_USERS: MockUser[] = [
       "friends first",
     ],
   },
+  // Exploring but leans toward connection
   {
     id: "2",
     name: "SEYI",
@@ -34,6 +36,7 @@ export const MOCK_USERS: MockUser[] = [
       "loves to host",
     ],
   },
+  // Casual seeker (converges toward fun/no-strings)
   {
     id: "3",
     name: "DANI",
@@ -41,27 +44,29 @@ export const MOCK_USERS: MockUser[] = [
     imageUrl:
       "https://images.unsplash.com/photo-1523824921871-d6f1a15151f1?w=200&h=200&fit=crop&crop=face",
     intention: "matchmaking",
-    matchPreferences: ["a-good-time", "new-bestie", "someone-to-go-out-with"],
+    matchPreferences: ["a-good-time", "someone-to-go-out-with", "open-to-exploring"],
     era: 0,
     traits: [
       "goofy",
-      "new friendships",
+      "no strings",
       "enm",
       "here for a good time",
-      "gathers the crew",
+      "not a long time",
     ],
   },
+  // Friendship focused (converges toward platonic)
   {
     id: "4",
     name: "HAYDEN",
     pronouns: "they/them",
     imageUrl:
-      "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200-& h=200& fit=crop& crop=face",
+      "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&h=200&fit=crop&crop=face",
     intention: "matchmaking",
-    matchPreferences: ["open-to-exploring", "new-bestie"],
+    matchPreferences: ["new-bestie", "someone-to-go-out-with"],
     era: 1,
-    traits: ["foodie", "open", "friends first", "museum dates"],
+    traits: ["foodie", "open", "platonic vibes", "museum dates"],
   },
+  // Serious but flexible (converges toward romance)
   {
     id: "5",
     name: "ALEX",
@@ -69,10 +74,11 @@ export const MOCK_USERS: MockUser[] = [
     imageUrl:
       "https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?w=200&h=200&fit=crop&crop=face",
     intention: "matchmaking",
-    matchPreferences: ["romantic-partner", "open-to-exploring"],
+    matchPreferences: ["romantic-partner", "relationship", "new-bestie"],
     era: 2,
     traits: ["bookworm", "coffee addict", "vinyl collector", "slow mornings"],
   },
+  // Activity partner focused (converges toward casual social)
   {
     id: "6",
     name: "JORDAN",
@@ -84,6 +90,7 @@ export const MOCK_USERS: MockUser[] = [
     era: 0,
     traits: ["night owl", "festival goer", "spontaneous", "dance floors"],
   },
+  // Relationship focused (converges toward commitment)
   {
     id: "7",
     name: "RILEY",
@@ -95,6 +102,7 @@ export const MOCK_USERS: MockUser[] = [
     era: 2,
     traits: ["homebody", "plant parent", "cozy vibes", "sunday brunches"],
   },
+  // Social / friendship focused
   {
     id: "8",
     name: "SAM",
@@ -102,8 +110,32 @@ export const MOCK_USERS: MockUser[] = [
     imageUrl:
       "https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=200&h=200&fit=crop&crop=face",
     intention: "matchmaking",
-    matchPreferences: ["new-bestie", "someone-to-go-out-with"],
+    matchPreferences: ["new-bestie", "someone-to-go-out-with", "open-to-exploring"],
     era: 1,
     traits: ["gym bro", "hiking enthusiast", "dog dad", "brunch crew"],
+  },
+  // Casual / hookup leaning
+  {
+    id: "9",
+    name: "QUINN",
+    pronouns: "they/them",
+    imageUrl:
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&h=200&fit=crop&crop=face",
+    intention: "matchmaking",
+    matchPreferences: ["a-good-time", "open-to-exploring", "someone-to-go-out-with"],
+    era: 0,
+    traits: ["late nights", "no labels", "fwb energy", "keep it light"],
+  },
+  // Flexible - open to anything
+  {
+    id: "10",
+    name: "MORGAN",
+    pronouns: "she/her",
+    imageUrl:
+      "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=200&h=200&fit=crop&crop=face",
+    intention: "matchmaking",
+    matchPreferences: ["open-to-exploring", "relationship", "a-good-time"],
+    era: 1,
+    traits: ["see where it goes", "genuine connections", "vibes first", "no rush"],
   },
 ];

@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { MatchCard } from '@/components/ui/match-card';
-import { FlurrColors, Spacing, CustomFonts } from '@/constants/theme';
+import { FlurrColors, Spacing, CustomFonts, Typography } from '@/constants/theme';
 import { useUserStore, MOCK_USERS, getMatches } from '@/store';
 
 export default function HomeScreen() {
@@ -29,16 +29,25 @@ export default function HomeScreen() {
         </Text>
 
         <View style={styles.matchList}>
-          {matches.map((match) => (
-            <MatchCard
-              key={match.user.id}
-              name={match.user.name}
-              pronouns={match.user.pronouns}
-              interests={match.user.traits}
-              compatibility={match.compatibility}
-              imageUrl={match.user.imageUrl}
-            />
-          ))}
+          {matches.length > 0 ? (
+            matches.map((match) => (
+              <MatchCard
+                key={match.user.id}
+                name={match.user.name}
+                pronouns={match.user.pronouns}
+                interests={match.user.traits}
+                compatibility={match.compatibility}
+                imageUrl={match.user.imageUrl}
+              />
+            ))
+          ) : (
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyTitle}>No matches yet</Text>
+              <Text style={styles.emptyText}>
+                We haven't got a match for you right now, check back later
+              </Text>
+            </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -84,5 +93,20 @@ const styles = StyleSheet.create({
   },
   matchList: {
     paddingBottom: Spacing.xl,
+  },
+  emptyState: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: Spacing.xxl,
+  },
+  emptyTitle: {
+    ...Typography.titleMedium,
+    marginBottom: Spacing.sm,
+  },
+  emptyText: {
+    ...Typography.bodyMedium,
+    color: FlurrColors.gray,
+    textAlign: 'center',
   },
 });
