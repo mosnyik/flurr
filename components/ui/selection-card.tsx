@@ -8,6 +8,7 @@ interface SelectionCardProps {
   iconName?: keyof typeof Ionicons.glyphMap;
   label: string;
   selected?: boolean;
+  showCheckmark?: boolean;
   onPress: () => void;
   style?: StyleProp<ViewStyle>;
 }
@@ -17,6 +18,7 @@ export function SelectionCard({
   iconName,
   label,
   selected = false,
+  showCheckmark = true,
   onPress,
   style,
 }: SelectionCardProps) {
@@ -35,8 +37,10 @@ export function SelectionCard({
           />
         ))}
       </View>
-      <Text style={styles.label}>{label}</Text>
-      {selected && (
+      <Text style={[styles.label, selected ? styles.labelSelected : styles.labelUnselected]}>
+        {label}
+      </Text>
+      {selected && showCheckmark && (
         <View style={styles.checkmark}>
           <Ionicons name="checkmark" size={16} color={FlurrColors.white} />
         </View>
@@ -61,8 +65,14 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.sm,
   },
   label: {
-    ...Typography.bodyMedium,
+    fontSize: 16,
     fontWeight: '500',
+  },
+  labelSelected: {
+    color: FlurrColors.black,
+  },
+  labelUnselected: {
+    color: 'rgba(0, 0, 0, 0.42)',
   },
   checkmark: {
     position: 'absolute',

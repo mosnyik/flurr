@@ -29,12 +29,14 @@ export default function IntentionsScreen() {
           <SelectionCard
             label="Matchmaking"
             selected={intention === 'matchmaking'}
+            showCheckmark={false}
             onPress={() => handleSelect('matchmaking')}
             style={styles.card}
           />
           <SelectionCard
             label="I am an organizer"
             selected={intention === 'organizer'}
+            showCheckmark={false}
             onPress={() => handleSelect('organizer')}
             style={styles.card}
           />

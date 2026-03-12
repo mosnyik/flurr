@@ -22,7 +22,7 @@ export const FlurrColors = {
   // UI Elements
   cardBorder: '#E5E5E5',
   inputBorder: '#D9D9D9',
-  chipBackground: '#F0F0F0',
+  chipBackground: 'rgba(0, 0, 0, 0.05)',
 
   // States
   disabled: '#CCCCCC',
