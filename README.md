@@ -8,7 +8,7 @@ A modern dating app built with React Native and Expo.
 flurr/
 ├── app/                    # Expo Router (file-based routing)
 │   ├── (auth)/            # Authentication flow
-│   │   ├── profile-builder/  # Onboarding steps
+│   │   ├── profile-builder/  # Onboarding steps (step-1 to step-8)
 │   │   ├── index.tsx      # Sign up screen
 │   │   ├── verify.tsx     # OTP verification
 │   │   └── intentions.tsx # User intentions
@@ -25,19 +25,16 @@ flurr/
 │   └── ui/                # Reusable UI components
 │       ├── button.tsx
 │       ├── input.tsx
+│       ├── otp-input.tsx
+│       ├── chip.tsx
+│       ├── chip-input.tsx
+│       ├── era-slider.tsx
 │       ├── match-card.tsx
 │       ├── selection-card.tsx
-│       └── ...
+│       ├── custom-tab-bar.tsx
+│       └── text-link.tsx
 ├── constants/
 │   └── theme.ts           # Colors, typography, spacing
-├── hooks/                 # Custom React hooks
-├── lib/                   # Utilities and helpers
-│   ├── api.ts            # API client
-│   ├── storage.ts        # AsyncStorage wrapper
-│   └── utils.ts          # Utility functions
-├── services/              # Business logic and API calls
-│   ├── auth.ts           # Authentication service
-│   └── matches.ts        # Matching service
 └── store/                 # State management
     ├── user-store.ts     # User state (Zustand)
     ├── matching.ts       # Matching algorithm
