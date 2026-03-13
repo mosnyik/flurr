@@ -198,13 +198,13 @@ Final = (100 × 0.35) + (72 × 0.55) + (60 × 0.10)
 pnpm install
 
 # Start development server
-pnpm expo start
+pnpm start
 
 # Run on iOS
-pnpm expo run:ios
+pnpm ios
 
 # Run on Android
-pnpm expo run:android
+pnpm android
 ```
 
 ## Tech Stack
