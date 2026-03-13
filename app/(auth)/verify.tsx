@@ -25,12 +25,12 @@ export default function VerifyScreen() {
     return () => clearInterval(timer);
   }, [countdown]);
 
-  const handleVerify = async () => {
-    if (code.length === 4) {
+  const handleVerify = async (verifyCode?: string) => {
+    const otpCode = verifyCode || code;
+    if (otpCode.length === 4 && !isLoading) {
       setIsLoading(true);
       // Simulate verification
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setIsLoading(false);
+      await new Promise((resolve) => setTimeout(resolve, 800));
       router.push('/(auth)/profile-builder/step-1');
     }
   };

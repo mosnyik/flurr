@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   ViewStyle,
   StyleProp,
+  Animated,
 } from 'react-native';
 import { FlurrColors, BorderRadius, Typography, Spacing } from '@/constants/theme';
 
@@ -27,33 +28,56 @@ export function Button({
   style,
 }: ButtonProps) {
   const isDisabled = disabled || loading;
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  const handlePressIn = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 0.97,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      friction: 3,
+      tension: 100,
+      useNativeDriver: true,
+    }).start();
+  };
 
   return (
     <TouchableOpacity
-      style={[
-        styles.base,
-        styles[variant],
-        isDisabled && styles.disabled,
-        style,
-      ]}
+      activeOpacity={1}
       onPress={onPress}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
       disabled={isDisabled}
-      activeOpacity={0.8}
     >
-      {loading ? (
-        <ActivityIndicator
-          color={variant === 'primary' || variant === 'ghost' ? FlurrColors.white : FlurrColors.black}
-        />
-      ) : (
-        <Text
-          style={[
-            styles.text,
-            (variant === 'primary' || variant === 'ghost') ? styles.textPrimary : styles.textSecondary,
-          ]}
-        >
-          {children}
-        </Text>
-      )}
+      <Animated.View
+        style={[
+          styles.base,
+          styles[variant],
+          isDisabled && styles.disabled,
+          { transform: [{ scale: scaleAnim }] },
+          style,
+        ]}
+      >
+        {loading ? (
+          <ActivityIndicator
+            color={variant === 'primary' || variant === 'ghost' ? FlurrColors.white : FlurrColors.black}
+          />
+        ) : (
+          <Text
+            style={[
+              styles.text,
+              (variant === 'primary' || variant === 'ghost') ? styles.textPrimary : styles.textSecondary,
+            ]}
+          >
+            {children}
+          </Text>
+        )}
+      </Animated.View>
     </TouchableOpacity>
   );
 }

@@ -30,7 +30,7 @@ export default function HomeScreen() {
 
         <View style={styles.matchList}>
           {matches.length > 0 ? (
-            matches.map((match) => (
+            matches.map((match, index) => (
               <MatchCard
                 key={match.user.id}
                 name={match.user.name}
@@ -38,6 +38,7 @@ export default function HomeScreen() {
                 interests={match.user.traits}
                 compatibility={match.compatibility}
                 imageUrl={match.user.imageUrl}
+                index={index}
               />
             ))
           ) : (
