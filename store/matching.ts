@@ -13,25 +13,19 @@ export interface MatchResult {
 // Weights for each factor
 const WEIGHTS = {
   intention: 0.35,
-  preferences: 0.50,
-  era: 0.15,
+  preferences: 0.55,
+  era: 0.10,
 };
 
 /**
  * Calculate intention compatibility score (0-100)
- * Same intent = 100%, closely aligned = 60-80%, conflicting = 0-20%
+ * Same intent = 100%, different intent = 0%
  */
 function calculateIntentionScore(userIntent: Intention | null, matchIntent: Intention): number {
   if (!userIntent) return 0;
 
-  // Same intention = 100%
-  if (userIntent === matchIntent) {
-    return 100;
-  }
-
-  // Different intentions - currently we only have 'matchmaking' and 'organizer'
-  // Matchmaking vs Organizer = conflicting (20%)
-  return 5; // Could be adjusted based on future intentions and user feedback  
+  // Same intention = 100%, different = 0%
+  return userIntent === matchIntent ? 100 : 0;
 }
 
 /**
@@ -92,6 +86,7 @@ const PREFERENCE_COMPATIBILITY: Record<MatchPreference, Record<MatchPreference, 
 /**
  * Calculate preferences compatibility score (0-100)
  * Uses the preference compatibility matrix to find the best match
+ * Max score is 100, which with 0.5 weight gives 50 contribution
  */
 function calculatePreferencesScore(
   userPrefs: MatchPreference[],
@@ -112,14 +107,8 @@ function calculatePreferencesScore(
     }
   }
 
-  // Also boost score if there are exact matches
-  const exactMatches = userPrefs.filter((p) => matchPrefs.includes(p)).length;
-  const exactMatchBonus = (exactMatches / Math.max(userPrefs.length, matchPrefs.length)) * 10;
-
-  const averageScore = pairCount > 0 ? totalScore / pairCount : 0;
-
-  // Cap at 100
-  return Math.min(100, averageScore + exactMatchBonus);
+  // Return average score (max 100)
+  return pairCount > 0 ? Math.round(totalScore / pairCount) : 0;
 }
 
 /**
@@ -184,12 +173,12 @@ export function getMatches(
   // Calculate compatibility for each user
   const matches = mockUsers.map((m) => calculateCompatibility(user, m));
 
-  // Sort by compatibility (highest first)
+  // Sort compatibility from the highest first
   return matches.sort((a, b) => b.compatibility - a.compatibility);
 }
 
 /**
- * Get a human-readable compatibility label
+ * compatibility label
  */
 export function getCompatibilityLabel(score: number): string {
   if (score >= 80) return 'Great match';
@@ -199,7 +188,7 @@ export function getCompatibilityLabel(score: number): string {
 }
 
 /**
- * Get compatibility color
+ * compatibility color
  */
 export function getCompatibilityColor(score: number): string {
   if (score >= 80) return '#4CAF50'; // Green
