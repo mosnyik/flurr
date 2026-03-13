@@ -120,7 +120,7 @@ export const MOCK_USERS: MockUser[] = [
     name: "QUINN",
     pronouns: "they/them",
     imageUrl:
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&h=200&fit=crop&crop=face",
+      "https://images.unsplash.com/photo-1507152927562-7d5e1f2a537a?w=200&h=200&fit=crop&crop=face",
     intention: "matchmaking",
     matchPreferences: ["a-good-time", "open-to-exploring", "someone-to-go-out-with"],
     era: 0,
