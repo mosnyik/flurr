@@ -23,7 +23,7 @@ const DEFAULT_LABELS = [
 
 const THUMB_WIDTH = 48;
 const THUMB_HEIGHT = 28;
-const TRACK_HEIGHT = 4;
+const TRACK_HEIGHT = 10;
 
 export function EraSlider({
   value,
@@ -160,11 +160,12 @@ const styles = StyleSheet.create({
   },
   sliderContainer: {
     height: 40,
-    justifyContent: 'center',
-    position: 'relative',
+    justifyContent: "center",
+    position: "relative",
+
   },
   track: {
-    position: 'absolute',
+    position: "absolute",
     left: THUMB_WIDTH / 2,
     right: THUMB_WIDTH / 2,
     height: TRACK_HEIGHT,
@@ -172,40 +173,40 @@ const styles = StyleSheet.create({
     borderRadius: TRACK_HEIGHT / 2,
   },
   dot: {
-    position: 'absolute',
+    position: "absolute",
     width: 8,
     height: 8,
     borderRadius: 4,
     backgroundColor: FlurrColors.chipBackground,
-    top: '50%',
+    top: "50%",
     marginTop: -4,
   },
   thumb: {
-    position: 'absolute',
+    position: "absolute",
     width: THUMB_WIDTH,
     height: THUMB_HEIGHT,
     borderRadius: THUMB_HEIGHT / 2,
     backgroundColor: FlurrColors.black,
   },
   labelsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: Spacing.md,
   },
   label: {
     ...Typography.bodySmall,
     color: FlurrColors.lightGray,
     flex: 1,
-    textAlign: 'center',
+    textAlign: "center",
   },
   labelActive: {
     color: FlurrColors.black,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   labelStart: {
-    textAlign: 'left',
+    textAlign: "left",
   },
   labelEnd: {
-    textAlign: 'right',
+    textAlign: "right",
   },
 });

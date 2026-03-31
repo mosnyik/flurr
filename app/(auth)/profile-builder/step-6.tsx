@@ -60,9 +60,10 @@ const styles = StyleSheet.create({
   },
   options: {
     flexDirection: 'row',
-    gap: Spacing.md,
+    gap: Spacing.sm,
+    alignSelf: 'flex-start',
   },
   card: {
-    flex: 1,
+    paddingHorizontal: Spacing.xl,
   },
 });
