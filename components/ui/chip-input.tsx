@@ -137,7 +137,13 @@ export function ChipInput({
               placeholder={isActive ? placeholder : undefined}
               placeholderTextColor={FlurrColors.lightGray}
               onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
+              onBlur={() => {
+                setIsFocused(false);
+                if (inputValue.trim()) {
+                  const added = addChip(inputValue);
+                  if (added) setInputValue('');
+                }
+              }}
               returnKeyType="done"
             />
           )}

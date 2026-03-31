@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { UserProfile, Intention, MatchPreference, Era } from './types';
+import { supabase } from '@/lib/supabase';
 
 interface UserState extends UserProfile {
   // Actions
@@ -34,7 +35,20 @@ export const useUserStore = create<UserState>((set) => ({
 
   setEra: (era) => set({ era }),
 
-  completeOnboarding: () => set({ isOnboarded: true }),
+  completeOnboarding: () => {
+    set({ isOnboarded: true });
+    const state = useUserStore.getState();
+    supabase.from('profiles').insert({
+      name: state.name,
+      pronouns: state.pronouns,
+      intention: state.intention,
+      match_preferences: state.matchPreferences,
+      era: state.era,
+      is_onboarded: true,
+    }).then(({ error }) => {
+      if (error) console.error('[Supabase] Failed to save profile:', error.message);
+    });
+  },
 
   reset: () => set(initialState),
 }));

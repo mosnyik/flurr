@@ -57,6 +57,7 @@ export default function Step1Screen() {
           minChipLength={2}
           maxChipLength={4}
         />
+        <Text style={styles.hint}>type a pronoun then press space, comma, or enter to add it</Text>
       </ScrollView>
 
       <ScreenFooter
@@ -83,5 +84,10 @@ const styles = StyleSheet.create({
   subtitle: {
     ...Typography.bodySmall,
     marginBottom: Spacing.xl,
+  },
+  hint: {
+    ...Typography.bodySmall,
+    marginTop: -Spacing.sm,
+    opacity: 0.5,
   },
 });
