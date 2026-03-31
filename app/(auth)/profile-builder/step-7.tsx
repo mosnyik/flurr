@@ -24,16 +24,15 @@ const OPTIONS: Presentation[] = [
 
 export default function Step7Screen() {
   const router = useRouter();
-  const { presentation, setPresentation, completeOnboarding } = useUserStore();
+  const { presentation, setPresentation } = useUserStore();
 
   const handleContinue = () => {
-    completeOnboarding();
-    router.replace('/(main)');
+    router.push('/(auth)/profile-builder/step-8');
   };
 
   return (
     <ScreenContainer keyboardAvoiding={false}>
-      <ProgressHeader currentStep={3} totalSteps={3} />
+      <ProgressHeader />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>which presentation do you identify w/ the most rn?</Text>

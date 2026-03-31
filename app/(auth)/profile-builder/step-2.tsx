@@ -10,7 +10,7 @@ export default function Step2Screen() {
 
   return (
     <ScreenContainer>
-      <ProgressHeader currentStep={2} totalSteps={8} />
+      <ProgressHeader />
 
       <View style={styles.content}>
         <Text style={styles.title}>step 2</Text>

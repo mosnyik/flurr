@@ -39,7 +39,7 @@ export default function Step4Screen() {
 
   return (
     <ScreenContainer keyboardAvoiding={false}>
-      <ProgressHeader currentStep={2} totalSteps={3} />
+      <ProgressHeader />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>

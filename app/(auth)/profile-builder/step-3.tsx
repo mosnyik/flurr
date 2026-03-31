@@ -10,7 +10,7 @@ export default function Step3Screen() {
 
   return (
     <ScreenContainer>
-      <ProgressHeader currentStep={3} totalSteps={8} />
+      <ProgressHeader />
 
       <View style={styles.content}>
         <Text style={styles.title}>step 3</Text>

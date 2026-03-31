@@ -17,7 +17,7 @@ export default function Step5Screen() {
 
   return (
     <ScreenContainer>
-      <ProgressHeader currentStep={3} totalSteps={3} />
+      <ProgressHeader />
 
       <View style={styles.content}>
         <Text style={styles.title}>whats ur era?</Text>

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { UserProfile, Intention, MatchPreference, Era, Presentation } from './types';
+import { UserProfile, Intention, MatchPreference, Era, Presentation, Archetype } from './types';
 import { supabase } from '@/lib/supabase';
 
 interface UserState extends UserProfile {
@@ -11,6 +11,7 @@ interface UserState extends UserProfile {
   setEra: (era: Era) => void;
   setBipoc: (bipoc: boolean) => void;
   setPresentation: (presentation: Presentation) => void;
+  setArchetypes: (archetypes: Archetype[]) => void;
   completeOnboarding: () => void;
   reset: () => void;
 }
@@ -23,6 +24,7 @@ const initialState: UserProfile = {
   era: 1,
   bipoc: null,
   presentation: null,
+  archetypes: [],
   isOnboarded: false,
 };
 
@@ -43,6 +45,8 @@ export const useUserStore = create<UserState>((set) => ({
 
   setPresentation: (presentation) => set({ presentation }),
 
+  setArchetypes: (archetypes) => set({ archetypes }),
+
   completeOnboarding: () => {
     set({ isOnboarded: true });
     const state = useUserStore.getState();
@@ -54,6 +58,7 @@ export const useUserStore = create<UserState>((set) => ({
       era: state.era,
       bipoc: state.bipoc,
       presentation: state.presentation,
+      archetypes: state.archetypes,
       is_onboarded: true,
     }).then(({ error }) => {
       if (error) console.error('[Supabase] Failed to save profile:', error.message);

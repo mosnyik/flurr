@@ -24,6 +24,18 @@ export type Presentation =
   | 'tomboi'
   | 'butch';
 
+export type Archetype =
+  | 'nova'
+  | 'blaze'
+  | 'jade'
+  | 'luna'
+  | 'rio'
+  | 'sage'
+  | 'leo'
+  | 'sol'
+  | 'zen'
+  | 'indigo';
+
 export interface UserProfile {
   name: string;
   pronouns: string[];
@@ -32,6 +44,7 @@ export interface UserProfile {
   era: Era;
   bipoc: boolean | null;
   presentation: Presentation | null;
+  archetypes: Archetype[];
   isOnboarded: boolean;
 }
 

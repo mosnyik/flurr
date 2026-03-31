@@ -1,17 +1,19 @@
 import { StyleSheet, View, Text } from 'react-native';
+import { usePathname } from 'expo-router';
 import { FlurrColors, Spacing, Typography } from '@/constants/theme';
+
+const PROFILE_STEPS = ['step-1', 'step-4', 'step-5', 'step-6', 'step-7', 'step-8'];
 
 interface ProgressHeaderProps {
   title?: string;
-  currentStep: number;
-  totalSteps: number;
 }
 
-export function ProgressHeader({
-  title = 'Profile Builder',
-  currentStep,
-  totalSteps,
-}: ProgressHeaderProps) {
+export function ProgressHeader({ title = 'Profile Builder' }: ProgressHeaderProps) {
+  const pathname = usePathname();
+  const stepName = pathname.split('/').pop() ?? '';
+  const index = PROFILE_STEPS.indexOf(stepName);
+  const currentStep = index === -1 ? 1 : index + 1;
+  const totalSteps = PROFILE_STEPS.length;
   const progress = currentStep / totalSteps;
 
   return (

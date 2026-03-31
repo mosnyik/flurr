@@ -31,7 +31,7 @@ export default function Step1Screen() {
 
   return (
     <ScreenContainer>
-      <ProgressHeader currentStep={1} totalSteps={3} />
+      <ProgressHeader />
 
       <ScrollView
         style={styles.content}

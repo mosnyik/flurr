@@ -17,7 +17,7 @@ export default function Step6Screen() {
 
   return (
     <ScreenContainer>
-      <ProgressHeader currentStep={3} totalSteps={3} />
+      <ProgressHeader />
 
       <View style={styles.content}>
         <Text style={styles.title}>do you identify as BIPOC?</Text>
