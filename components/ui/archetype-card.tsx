@@ -1,10 +1,10 @@
-import { useRef, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, Animated } from 'react-native';
+import { useRef, useEffect, ReactNode } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Animated } from 'react-native';
 import { FlurrColors, BorderRadius, Spacing, Shadows, Typography } from '@/constants/theme';
 
 interface ArchetypeCardProps {
   name: string;
-  icon: string;
+  icon: ReactNode;
   title: string;
   description: string;
   selected: boolean;
@@ -31,8 +31,10 @@ export function ArchetypeCard({ name, icon, title, description, selected, onPres
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.wrapper}>
       <Animated.View style={[styles.card, { borderColor }]}>
-        <Text style={styles.icon}>{icon}</Text>
-        <Text style={styles.name}>{name}</Text>
+        <View style={styles.row}>
+          <Text style={styles.name}>{name}</Text>
+          {icon}
+        </View>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.description}>{description}</Text>
       </Animated.View>
@@ -52,15 +54,18 @@ const styles = StyleSheet.create({
     gap: Spacing.xs,
     ...Shadows.card,
   },
-  icon: {
-    fontSize: 18,
-    marginBottom: 2,
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   name: {
     fontSize: 15,
     fontWeight: '700',
+    fontStyle: 'italic',
     color: FlurrColors.black,
     textTransform: 'lowercase',
+    flexShrink: 1,
   },
   title: {
     ...Typography.bodySmall,

@@ -25,15 +25,15 @@ export type Presentation =
   | 'butch';
 
 export type Archetype =
-  | 'nova'
+  | 'moss'
   | 'blaze'
   | 'jade'
-  | 'luna'
+  | 'lune'
   | 'rio'
   | 'sage'
-  | 'leo'
+  | 'luz'
   | 'sol'
-  | 'zen'
+  | 'zea'
   | 'indigo';
 
 export interface UserProfile {
