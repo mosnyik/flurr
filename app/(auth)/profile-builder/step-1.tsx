@@ -1,18 +1,21 @@
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { useRef } from 'react';
 import { useRouter } from 'expo-router';
 import { ScreenContainer } from '@/components/layout/screen-container';
 import { ScreenFooter } from '@/components/layout/screen-footer';
 import { ProgressHeader } from '@/components/layout/progress-header';
 import { Input } from '@/components/ui/input';
-import { ChipInput } from '@/components/ui/chip-input';
+import { ChipInput, ChipInputHandle } from '@/components/ui/chip-input';
 import { Typography, Spacing } from '@/constants/theme';
 import { useUserStore } from '@/store';
 
 export default function Step1Screen() {
   const router = useRouter();
   const { name, pronouns, setName, setPronouns } = useUserStore();
+  const chipInputRef = useRef<ChipInputHandle>(null);
 
   const handleContinue = () => {
+    chipInputRef.current?.flush();
     router.push('/(auth)/profile-builder/step-4');
   };
 
@@ -47,7 +50,9 @@ export default function Step1Screen() {
           autoCapitalize="words"
         />
 
+        <Text style={styles.hint}>type a pronoun then press space, comma, or enter to add it</Text>
         <ChipInput
+          ref={chipInputRef}
           label="Pronouns"
           chips={pronouns}
           onAddChip={handleAddPronoun}
@@ -57,7 +62,6 @@ export default function Step1Screen() {
           minChipLength={2}
           maxChipLength={4}
         />
-        <Text style={styles.hint}>type a pronoun then press space, comma, or enter to add it</Text>
       </ScrollView>
 
       <ScreenFooter
@@ -87,7 +91,7 @@ const styles = StyleSheet.create({
   },
   hint: {
     ...Typography.bodySmall,
-    marginTop: -Spacing.sm,
+    marginBottom: Spacing.sm,
     opacity: 0.5,
   },
 });

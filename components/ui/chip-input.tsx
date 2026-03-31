@@ -5,7 +5,7 @@ import {
   Spacing,
   Typography,
 } from "@/constants/theme";
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import {
   Animated,
   NativeSyntheticEvent,
@@ -15,6 +15,10 @@ import {
   View,
 } from "react-native";
 import { Chip } from "./chip";
+
+export interface ChipInputHandle {
+  flush: () => void;
+}
 
 interface ChipInputProps {
   label?: string;
@@ -27,7 +31,7 @@ interface ChipInputProps {
   maxChipLength?: number;
 }
 
-export function ChipInput({
+export const ChipInput = forwardRef<ChipInputHandle, ChipInputProps>(function ChipInput({
   label,
   chips,
   onAddChip,
@@ -36,9 +40,18 @@ export function ChipInput({
   maxChips = 5,
   minChipLength = 1,
   maxChipLength,
-}: ChipInputProps) {
+}: ChipInputProps, ref) {
   const [inputValue, setInputValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
+
+  useImperativeHandle(ref, () => ({
+    flush: () => {
+      if (inputValue.trim()) {
+        const added = addChip(inputValue);
+        if (added) setInputValue('');
+      }
+    },
+  }));
 
   const animatedValue = useRef(
     new Animated.Value(chips.length > 0 ? 1 : 0),
@@ -70,7 +83,7 @@ export function ChipInput({
   };
 
   const addChip = (value: string) => {
-    const trimmed = value.trim();
+    const trimmed = value.trim().replace(/,/g, '');
 
     if (!trimmed) {
       return false;
@@ -151,7 +164,7 @@ export function ChipInput({
       </View>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {

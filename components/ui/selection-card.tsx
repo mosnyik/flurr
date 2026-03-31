@@ -9,6 +9,7 @@ interface SelectionCardProps {
   label: string;
   selected?: boolean;
   showCheckmark?: boolean;
+  compact?: boolean;
   onPress: () => void;
   style?: StyleProp<ViewStyle>;
 }
@@ -19,6 +20,7 @@ export function SelectionCard({
   label,
   selected = false,
   showCheckmark = false,
+  compact = false,
   onPress,
   style,
 }: SelectionCardProps) {
@@ -66,6 +68,7 @@ export function SelectionCard({
       <Animated.View
         style={[
           styles.container,
+          compact && styles.containerCompact,
           { borderColor, transform: [{ scale: scaleAnim }] },
         ]}
       >
@@ -80,7 +83,7 @@ export function SelectionCard({
             ))}
           </View>
         )}
-        <Text style={styles.label}>
+        <Text style={[styles.label, compact && styles.labelCompact]}>
           {label}
         </Text>
         {selected && showCheckmark && (
@@ -104,6 +107,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     ...Shadows.card,
   },
+  containerCompact: {
+    minHeight: 48,
+    paddingVertical: Spacing.sm,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   iconContainer: {
     alignSelf: 'flex-end',
   },
@@ -112,6 +121,9 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     alignSelf: 'flex-start',
     color: FlurrColors.black,
+  },
+  labelCompact: {
+    alignSelf: 'center',
   },
   checkmark: {
     position: 'absolute',

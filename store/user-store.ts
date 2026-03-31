@@ -9,6 +9,7 @@ interface UserState extends UserProfile {
   setIntention: (intention: Intention) => void;
   setMatchPreferences: (preferences: MatchPreference[]) => void;
   setEra: (era: Era) => void;
+  setBipoc: (bipoc: boolean) => void;
   completeOnboarding: () => void;
   reset: () => void;
 }
@@ -19,6 +20,7 @@ const initialState: UserProfile = {
   intention: null,
   matchPreferences: [],
   era: 1,
+  bipoc: null,
   isOnboarded: false,
 };
 
@@ -35,6 +37,8 @@ export const useUserStore = create<UserState>((set) => ({
 
   setEra: (era) => set({ era }),
 
+  setBipoc: (bipoc) => set({ bipoc }),
+
   completeOnboarding: () => {
     set({ isOnboarded: true });
     const state = useUserStore.getState();
@@ -44,6 +48,7 @@ export const useUserStore = create<UserState>((set) => ({
       intention: state.intention,
       match_preferences: state.matchPreferences,
       era: state.era,
+      bipoc: state.bipoc,
       is_onboarded: true,
     }).then(({ error }) => {
       if (error) console.error('[Supabase] Failed to save profile:', error.message);

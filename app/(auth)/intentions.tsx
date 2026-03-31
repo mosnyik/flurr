@@ -30,6 +30,7 @@ export default function IntentionsScreen() {
             label="Matchmaking"
             selected={intention === 'matchmaking'}
             showCheckmark={false}
+            compact
             onPress={() => handleSelect('matchmaking')}
             style={styles.card}
           />
@@ -37,6 +38,7 @@ export default function IntentionsScreen() {
             label="I am an organizer"
             selected={intention === 'organizer'}
             showCheckmark={false}
+            compact
             onPress={() => handleSelect('organizer')}
             style={styles.card}
           />

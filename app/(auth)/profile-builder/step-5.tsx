@@ -9,11 +9,10 @@ import { useUserStore, Era } from '@/store';
 
 export default function Step5Screen() {
   const router = useRouter();
-  const { era, setEra, completeOnboarding } = useUserStore();
+  const { era, setEra } = useUserStore();
 
   const handleContinue = () => {
-    completeOnboarding();
-    router.replace('/(main)');
+    router.push('/(auth)/profile-builder/step-6');
   };
 
   return (

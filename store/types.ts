@@ -16,6 +16,7 @@ export interface UserProfile {
   intention: Intention | null;
   matchPreferences: MatchPreference[];
   era: Era;
+  bipoc: boolean | null;
   isOnboarded: boolean;
 }
 

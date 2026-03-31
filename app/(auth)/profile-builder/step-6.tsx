@@ -3,25 +3,48 @@ import { useRouter } from 'expo-router';
 import { ScreenContainer } from '@/components/layout/screen-container';
 import { ScreenFooter } from '@/components/layout/screen-footer';
 import { ProgressHeader } from '@/components/layout/progress-header';
-import { Typography, Spacing, FlurrColors } from '@/constants/theme';
+import { SelectionCard } from '@/components/ui/selection-card';
+import { Typography, Spacing } from '@/constants/theme';
+import { useUserStore } from '@/store';
 
 export default function Step6Screen() {
   const router = useRouter();
+  const { bipoc, setBipoc, completeOnboarding } = useUserStore();
+
+  const handleContinue = () => {
+    completeOnboarding();
+    router.replace('/(main)');
+  };
 
   return (
     <ScreenContainer>
-      <ProgressHeader currentStep={6} totalSteps={8} />
+      <ProgressHeader currentStep={3} totalSteps={3} />
 
       <View style={styles.content}>
-        <Text style={styles.title}>step 6</Text>
-        <View style={styles.placeholder}>
-          <Text style={styles.placeholderText}>Coming soon...</Text>
+        <Text style={styles.title}>do you identify as BIPOC?</Text>
+
+        <View style={styles.options}>
+          <SelectionCard
+            label="Yes"
+            selected={bipoc === true}
+            compact
+            onPress={() => setBipoc(true)}
+            style={styles.card}
+          />
+          <SelectionCard
+            label="No"
+            selected={bipoc === false}
+            compact
+            onPress={() => setBipoc(false)}
+            style={styles.card}
+          />
         </View>
       </View>
 
       <ScreenFooter
-        primaryLabel="continue"
-        onPrimaryPress={() => router.push('/(auth)/profile-builder/step-7')}
+        primaryLabel="let's go!"
+        onPrimaryPress={handleContinue}
+        primaryDisabled={bipoc === null}
         onBackPress={() => router.back()}
       />
     </ScreenContainer>
@@ -36,13 +59,11 @@ const styles = StyleSheet.create({
     ...Typography.titleLarge,
     marginBottom: Spacing.xl,
   },
-  placeholder: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  options: {
+    flexDirection: 'row',
+    gap: Spacing.md,
   },
-  placeholderText: {
-    ...Typography.bodyLarge,
-    color: FlurrColors.lightGray,
+  card: {
+    flex: 1,
   },
 });
