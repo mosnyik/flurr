@@ -5,13 +5,17 @@ import { Ionicons } from '@expo/vector-icons';
 import { MatchCard } from '@/components/ui/match-card';
 import { FlurrColors, Spacing, CustomFonts, Typography } from '@/constants/theme';
 import { useUserStore, MOCK_USERS, getMatches } from '@/store';
+import { useRealUsers } from '@/lib/useRealUsers';
 
 export default function HomeScreen() {
   const user = useUserStore();
+  const { users: realUsers, loading } = useRealUsers(user.name);
+
+  const pool = realUsers.length > 0 ? realUsers : MOCK_USERS;
 
   const matches = useMemo(() => {
-    return getMatches(user, MOCK_USERS);
-  }, [user.intention, user.matchPreferences, user.era]);
+    return getMatches(user, pool);
+  }, [user.intention, user.matchPreferences, user.era, pool]);
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>

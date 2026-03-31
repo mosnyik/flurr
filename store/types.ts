@@ -57,5 +57,9 @@ export interface MockUser {
   intention: Intention;
   matchPreferences: MatchPreference[];
   era: Era;
+  bipoc?: boolean;
+  presentation?: Presentation;
+  archetypes?: Archetype[];
+  drawnTo?: Archetype[];
   traits: string[];
 }
