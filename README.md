@@ -9,7 +9,7 @@ A dating app for soft queers, shy bois, femmes who flirt with their eyes, etc. B
 ### 1. Clone & install
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/mosnyik/flurr
 cd flurr
 pnpm install
 ```
