@@ -7,6 +7,7 @@ interface ChipProps {
   onRemove?: () => void;
   removable?: boolean;
   selected?: boolean;
+  large?: boolean;
   onPress?: () => void;
 }
 
@@ -15,13 +16,14 @@ export function Chip({
   onRemove,
   removable = false,
   selected = false,
+  large = false,
   onPress,
 }: ChipProps) {
   const Container = onPress ? TouchableOpacity : View;
 
   return (
     <Container
-      style={[styles.container, selected && styles.selected]}
+      style={[styles.container, selected && styles.selected, large && styles.large, large && selected && styles.largeSelected]}
       onPress={onPress}
       activeOpacity={0.7}
     >
@@ -48,6 +50,18 @@ const styles = StyleSheet.create({
   },
   selected: {
     backgroundColor: FlurrColors.black,
+  },
+  large: {
+    height: 52,
+    borderRadius: BorderRadius.lg,
+    paddingHorizontal: Spacing.lg,
+    backgroundColor: FlurrColors.white,
+    borderWidth: 1,
+    borderColor: FlurrColors.inputBorder,
+  },
+  largeSelected: {
+    backgroundColor: FlurrColors.black,
+    borderColor: FlurrColors.black,
   },
   label: {
     ...Typography.bodySmall,

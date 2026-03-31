@@ -10,6 +10,20 @@ export type MatchPreference =
 
 export type Era = 0 | 1 | 2; // 0: Gen Z, 1: Zillenial, 2: Millennial
 
+export type Presentation =
+  | 'androgynous'
+  | 'masc'
+  | 'soft-masc'
+  | 'gender-queer'
+  | 'gender-fluid'
+  | 'fairy'
+  | 'soft femme'
+  | 'femme'
+  | 'other'
+  | 'high femme queen'
+  | 'tomboi'
+  | 'butch';
+
 export interface UserProfile {
   name: string;
   pronouns: string[];
@@ -17,6 +31,7 @@ export interface UserProfile {
   matchPreferences: MatchPreference[];
   era: Era;
   bipoc: boolean | null;
+  presentation: Presentation | null;
   isOnboarded: boolean;
 }
 

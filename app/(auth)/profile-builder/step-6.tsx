@@ -9,11 +9,10 @@ import { useUserStore } from '@/store';
 
 export default function Step6Screen() {
   const router = useRouter();
-  const { bipoc, setBipoc, completeOnboarding } = useUserStore();
+  const { bipoc, setBipoc } = useUserStore();
 
   const handleContinue = () => {
-    completeOnboarding();
-    router.replace('/(main)');
+    router.push('/(auth)/profile-builder/step-7');
   };
 
   return (
