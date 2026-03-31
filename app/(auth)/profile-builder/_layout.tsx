@@ -17,6 +17,7 @@ export default function ProfileBuilderLayout() {
       <Stack.Screen name="step-6" />
       <Stack.Screen name="step-7" />
       <Stack.Screen name="step-8" />
+      <Stack.Screen name="step-9" />
     </Stack>
   );
 }

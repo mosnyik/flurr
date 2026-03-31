@@ -27,7 +27,7 @@ const ARCHETYPES: { id: Archetype; icon: React.ReactNode; title: string; descrip
 
 export default function Step8Screen() {
   const router = useRouter();
-  const { archetypes, setArchetypes, completeOnboarding } = useUserStore();
+  const { archetypes, setArchetypes } = useUserStore();
 
   const toggle = (id: Archetype) => {
     if (archetypes.includes(id)) {
@@ -38,8 +38,7 @@ export default function Step8Screen() {
   };
 
   const handleContinue = () => {
-    completeOnboarding();
-    router.replace('/(main)');
+    router.push('/(auth)/profile-builder/step-9');
   };
 
   return (

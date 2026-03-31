@@ -2,7 +2,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import { usePathname } from 'expo-router';
 import { FlurrColors, Spacing, Typography } from '@/constants/theme';
 
-const PROFILE_STEPS = ['step-1', 'step-4', 'step-5', 'step-6', 'step-7', 'step-8'];
+const PROFILE_STEPS = ['step-1', 'step-4', 'step-5', 'step-6', 'step-7', 'step-8', 'step-9'];
 
 interface ProgressHeaderProps {
   title?: string;

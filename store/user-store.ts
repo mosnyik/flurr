@@ -12,6 +12,7 @@ interface UserState extends UserProfile {
   setBipoc: (bipoc: boolean) => void;
   setPresentation: (presentation: Presentation) => void;
   setArchetypes: (archetypes: Archetype[]) => void;
+  setDrawnTo: (drawnTo: Archetype[]) => void;
   completeOnboarding: () => void;
   reset: () => void;
 }
@@ -25,6 +26,7 @@ const initialState: UserProfile = {
   bipoc: null,
   presentation: null,
   archetypes: [],
+  drawnTo: [],
   isOnboarded: false,
 };
 
@@ -47,6 +49,8 @@ export const useUserStore = create<UserState>((set) => ({
 
   setArchetypes: (archetypes) => set({ archetypes }),
 
+  setDrawnTo: (drawnTo) => set({ drawnTo }),
+
   completeOnboarding: () => {
     set({ isOnboarded: true });
     const state = useUserStore.getState();
@@ -59,6 +63,7 @@ export const useUserStore = create<UserState>((set) => ({
       bipoc: state.bipoc,
       presentation: state.presentation,
       archetypes: state.archetypes,
+      drawn_to: state.drawnTo,
       is_onboarded: true,
     }).then(({ error }) => {
       if (error) console.error('[Supabase] Failed to save profile:', error.message);

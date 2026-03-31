@@ -45,6 +45,7 @@ export interface UserProfile {
   bipoc: boolean | null;
   presentation: Presentation | null;
   archetypes: Archetype[];
+  drawnTo: Archetype[];
   isOnboarded: boolean;
 }
 
