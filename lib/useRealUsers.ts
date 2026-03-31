@@ -24,10 +24,15 @@ export function useRealUsers(excludeName?: string) {
           id: row.id,
           name: (row.name ?? '').toUpperCase(),
           pronouns: Array.isArray(row.pronouns) ? row.pronouns.join('/') : row.pronouns ?? '',
+          imageUrl: row.image_url ?? undefined,
           intention: (row.intention ?? 'matchmaking') as Intention,
           matchPreferences: (row.match_preferences ?? []) as MatchPreference[],
           era: (row.era ?? 1) as Era,
-          traits: [
+          bipoc: row.bipoc ?? undefined,
+          presentation: row.presentation ?? undefined,
+          archetypes: row.archetypes ?? undefined,
+          drawnTo: row.drawn_to ?? undefined,
+          traits: row.traits ?? [
             ...(row.presentation ? [row.presentation] : []),
             ...(row.archetypes ?? []),
           ],

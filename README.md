@@ -1,218 +1,236 @@
 # Flurr
 
-A modern dating app built with React Native and Expo.
+A dating app for soft queers, shy bois, femmes who flirt with their eyes, etc. Built with React Native and Expo.
+
+---
+
+## Getting Started
+
+### 1. Clone & install
+
+```bash
+git clone <repo-url>
+cd flurr
+pnpm install
+```
+
+### 2. Environment variables
+
+Copy `.env.example` to `.env` and fill in your Supabase credentials:
+
+```bash
+cp .env.example .env
+```
+
+```env
+EXPO_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+```
+
+### 3. Set up the database
+
+Go to your Supabase project → **SQL Editor** and run:
+
+```sql
+drop table if exists profiles;
+
+create table profiles (
+  id                uuid primary key default gen_random_uuid(),
+  name              text,
+  pronouns          text[],
+  image_url         text,
+  intention         text,
+  match_preferences text[],
+  era               smallint,
+  bipoc             boolean,
+  presentation      text,
+  archetypes        text[],
+  drawn_to          text[],
+  traits            text[],
+  is_onboarded      boolean default false,
+  created_at        timestamptz default now()
+);
+
+-- Seed mock users
+insert into profiles (id, name, pronouns, image_url, intention, match_preferences, era, traits, is_onboarded) values
+  ('00000000-0000-0000-0000-000000000001', 'TRACEY', array['she','her'],  'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['romantic-partner','relationship','open-to-exploring'], 2, array['prefers 1:1','long walks','birding','slow replies ok','friends first'], true),
+  ('00000000-0000-0000-0000-000000000002', 'SEYI',   array['she','they'], 'https://images.unsplash.com/photo-1589156280159-27698a70f29e?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['open-to-exploring','relationship','new-bestie'],              1, array['deep convos pls','calling > texting','beach life','loves to host'],        true),
+  ('00000000-0000-0000-0000-000000000003', 'DANI',   array['any'],        'https://images.unsplash.com/photo-1523824921871-d6f1a15151f1?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['a-good-time','someone-to-go-out-with','open-to-exploring'],   0, array['goofy','no strings','enm','here for a good time','not a long time'],       true),
+  ('00000000-0000-0000-0000-000000000004', 'HAYDEN', array['they','them'],'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['new-bestie','someone-to-go-out-with'],                       1, array['foodie','open','platonic vibes','museum dates'],                           true),
+  ('00000000-0000-0000-0000-000000000005', 'ALEX',   array['he','they'],  'https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['romantic-partner','relationship','new-bestie'],               2, array['bookworm','coffee addict','vinyl collector','slow mornings'],               true),
+  ('00000000-0000-0000-0000-000000000006', 'JORDAN', array['they','them'],'https://images.unsplash.com/photo-1534614971-6be99a7a3ffd?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['someone-to-go-out-with','a-good-time','new-bestie'],           0, array['night owl','festival goer','spontaneous','dance floors'],                   true),
+  ('00000000-0000-0000-0000-000000000007', 'RILEY',  array['she','her'],  'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['relationship','romantic-partner'],                            2, array['homebody','plant parent','cozy vibes','sunday brunches'],                   true),
+  ('00000000-0000-0000-0000-000000000008', 'SAM',    array['he','him'],   'https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['new-bestie','someone-to-go-out-with','open-to-exploring'],   1, array['gym bro','hiking enthusiast','dog dad','brunch crew'],                      true),
+  ('00000000-0000-0000-0000-000000000009', 'QUINN',  array['they','them'],'https://images.unsplash.com/photo-1507152927562-7d5e1f2a537a?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['a-good-time','open-to-exploring','someone-to-go-out-with'], 0, array['late nights','no labels','fwb energy','keep it light'],                     true),
+  ('00000000-0000-0000-0000-000000000010', 'MORGAN', array['she','her'],  'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['open-to-exploring','relationship','a-good-time'],            1, array['see where it goes','genuine connections','vibes first','no rush'],          true);
+```
+
+### 4. Start the app
+
+```bash
+# Start development server
+pnpm start
+
+# Run on Android
+pnpm android
+
+# Run on iOS
+pnpm ios
+```
+
+---
 
 ## Architecture
 
 ```
 flurr/
-├── app/                    # Expo Router (file-based routing)
-│   ├── (auth)/            # Authentication flow
-│   │   ├── profile-builder/  # Onboarding steps (step-1 to step-8)
-│   │   ├── index.tsx      # Sign up screen
-│   │   ├── verify.tsx     # OTP verification
-│   │   └── intentions.tsx # User intentions
-│   ├── (main)/            # Main app (authenticated)
-│   │   ├── index.tsx      # Home/matches screen
-│   │   ├── chats.tsx      # Chat list
-│   │   └── events.tsx     # Events screen
-│   └── _layout.tsx        # Root layout
+├── app/                          # Expo Router (file-based routing)
+│   ├── (auth)/                   # Unauthenticated flow
+│   │   ├── profile-builder/      # Onboarding steps
+│   │   │   ├── step-1.tsx        # Name & pronouns
+│   │   │   ├── step-4.tsx        # Match preferences
+│   │   │   ├── step-5.tsx        # Era (dating pace)
+│   │   │   ├── step-6.tsx        # BIPOC identity
+│   │   │   ├── step-7.tsx        # Gender presentation
+│   │   │   ├── step-8.tsx        # Your archetypes
+│   │   │   └── step-9.tsx        # Archetypes you're drawn to
+│   │   ├── index.tsx             # Welcome / sign up
+│   │   ├── verify.tsx            # OTP verification
+│   │   └── intentions.tsx        # Matchmaking vs organizer
+│   ├── (main)/                   # Authenticated app
+│   │   ├── index.tsx             # Home / matches feed
+│   │   ├── chats.tsx             # Chat list
+│   │   └── events.tsx            # Events screen
+│   └── _layout.tsx               # Root layout
 ├── components/
-│   ├── layout/            # Layout components
+│   ├── layout/
 │   │   ├── screen-container.tsx
 │   │   ├── screen-footer.tsx
-│   │   └── progress-header.tsx
-│   └── ui/                # Reusable UI components
+│   │   └── progress-header.tsx   # Auto-detects step from route
+│   └── ui/
 │       ├── button.tsx
 │       ├── input.tsx
 │       ├── otp-input.tsx
 │       ├── chip.tsx
-│       ├── chip-input.tsx
-│       ├── era-slider.tsx
+│       ├── chip-input.tsx        # Tag input with auto-commit on blur
+│       ├── era-slider.tsx        # Custom pan-gesture slider
 │       ├── match-card.tsx
-│       ├── selection-card.tsx
+│       ├── selection-card.tsx    # Supports compact mode
+│       ├── archetype-card.tsx    # Card with icon + name + description
 │       ├── custom-tab-bar.tsx
 │       └── text-link.tsx
 ├── constants/
-│   └── theme.ts           # Colors, typography, spacing
-└── store/                 # State management
-    ├── user-store.ts     # User state (Zustand)
-    ├── matching.ts       # Matching algorithm
-    ├── mock-users.ts     # Mock data
-    └── types.ts          # TypeScript types
+│   └── theme.ts                  # Colors, typography, spacing
+├── lib/
+│   ├── supabase.ts               # Supabase client (SecureStore sessions)
+│   └── useRealUsers.ts           # Fetches profiles from DB, falls back to mock
+└── store/
+    ├── user-store.ts             # Zustand store — profile state + Supabase save
+    ├── matching.ts               # Weighted compatibility algorithm
+    ├── mock-users.ts             # Seed / fallback user data
+    └── types.ts                  # TypeScript types
 ```
 
-### Key Patterns
+---
 
-- **File-based routing**: Expo Router handles navigation based on file structure
-- **Route groups**: `(auth)` and `(main)` organize routes without affecting URLs
-- **Barrel exports**: `index.ts` files for clean imports (`@/components/ui`)
-- **Separation of concerns**: UI components, business logic, and state are isolated
+## Onboarding Flow
 
-## State Management
+Users go through a 7-step profile builder before reaching the main app:
 
-Flurr uses [Zustand](https://github.com/pmndrs/zustand) for state management - a lightweight, unopinionated solution.
+| Step | Screen | What it captures |
+|------|--------|-----------------|
+| 1/7 | Name & Pronouns | `name`, `pronouns` |
+| 2/7 | Intentions | `intention` — matchmaking or organizer |
+| 3/7 | Match Preferences | `matchPreferences` — what they're looking for |
+| 4/7 | Era | `era` — dating pace (Gen Z / Zillenial / Millennial) |
+| 5/7 | BIPOC | `bipoc` — identity flag |
+| 6/7 | Presentation | `presentation` — gender expression |
+| 7/7 | Your Archetypes | `archetypes` — vibes that describe them |
+| 8/7 | Drawn To | `drawnTo` — archetypes they're attracted to |
 
-### User Store
+On completion, the full profile is saved to Supabase.
+
+---
+
+## User Profile Shape
 
 ```typescript
-// store/user-store.ts
-interface UserState extends UserProfile {
-  setName: (name: string) => void;
-  setPronouns: (pronouns: string[]) => void;
-  setIntention: (intention: Intention) => void;
-  setMatchPreferences: (prefs: MatchPreference[]) => void;
-  setEra: (era: number) => void;
-  completeOnboarding: () => void;
+interface UserProfile {
+  name:             string;
+  pronouns:         string[];
+  intention:        'matchmaking' | 'organizer' | null;
+  matchPreferences: MatchPreference[];
+  era:              0 | 1 | 2;       // 0 = Gen Z, 1 = Zillenial, 2 = Millennial
+  bipoc:            boolean | null;
+  presentation:     Presentation | null;
+  archetypes:       Archetype[];
+  drawnTo:          Archetype[];
+  isOnboarded:      boolean;
 }
 ```
 
-### Usage
-
-```typescript
-import { useUserStore } from '@/store';
-
-function MyComponent() {
-  const { name, setName, matchPreferences } = useUserStore();
-
-  return <Input value={name} onChangeText={setName} />;
-}
-```
-
-### User Profile Shape
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `name` | `string` | User's first name |
-| `pronouns` | `string[]` | e.g., `['she', 'her']` |
-| `intention` | `Intention` | `'matchmaking'` or `'organizer'` |
-| `matchPreferences` | `MatchPreference[]` | What user is looking for |
-| `era` | `number` | Dating pace (0-2) |
-| `isOnboarded` | `boolean` | Onboarding completion status |
+---
 
 ## Matching Algorithm
 
-The matching algorithm calculates compatibility between users based on three weighted factors.
-
-### Weights
+Compatibility is calculated across three weighted factors:
 
 | Factor | Weight | Description |
 |--------|--------|-------------|
-| Intention | 35% | Are they both looking for matches? |
-| Preferences | 55% | What are they looking for? |
+| Intention | 35% | Must share the same intention to score |
+| Preferences | 55% | How well their desired connections align |
 | Era | 10% | Dating pace compatibility |
 
-### Intention Score (0-100)
-
-Binary match - users must have the same intention to score.
-
-```
-Same intention    → 100
-Different         → 0
-```
-
-### Preference Score (0-100)
-
-Uses a compatibility matrix to score how well preferences align.
-
-**Preference Types:**
-- `romantic-partner` - Looking for love
-- `relationship` - Seeking commitment
-- `open-to-exploring` - Flexible
-- `someone-to-go-out-with` - Activity partner
-- `a-good-time` - Casual connection
-- `new-bestie` - Friendship
-
-**Compatibility Matrix (excerpt):**
+### Preference compatibility matrix (excerpt)
 
 |  | romantic-partner | relationship | open-to-exploring | a-good-time |
-|--|------------------|--------------|-------------------|-------------|
+|--|-----------------|--------------|-------------------|-------------|
 | **romantic-partner** | 100 | 90 | 60 | 30 |
 | **relationship** | 90 | 100 | 40 | 25 |
 | **open-to-exploring** | 70 | 40 | 100 | 80 |
 | **a-good-time** | 50 | 15 | 80 | 100 |
 
-The algorithm averages scores across all user preference pairs.
-
-### Era Score (0-100)
-
-Measures dating pace compatibility.
+### Era score
 
 ```
-Same era (0 diff)     → 100
-Adjacent (1 diff)     → 60
-Far apart (2+ diff)   → 20
+Same era (0 diff)   → 100
+Adjacent (1 diff)   → 60
+Far apart (2 diff)  → 20
 ```
 
-**Era Values:**
-- `0` - Fast pace (spontaneous, ready now)
-- `1` - Medium pace (balanced approach)
-- `2` - Slow pace (taking time, friends first)
+### Compatibility labels
 
-### Final Calculation
+| Score | Label |
+|-------|-------|
+| 80–100 | Great match |
+| 60–79 | Good match |
+| 40–59 | Potential |
+| 0–39 | Low match |
+
+---
+
+## State Management
+
+Flurr uses [Zustand](https://github.com/pmndrs/zustand) for local state. On `completeOnboarding()` the full profile is inserted into Supabase.
 
 ```typescript
-compatibility = Math.round(
-  (intentionScore * 0.35) +
-  (preferencesScore * 0.55) +
-  (eraScore * 0.10)
-);
+import { useUserStore } from '@/store';
+
+const { name, setName, matchPreferences } = useUserStore();
 ```
 
-### Example
-
-**User A:**
-- Intention: `matchmaking`
-- Preferences: `['romantic-partner', 'relationship']`
-- Era: `2`
-
-**User B:**
-- Intention: `matchmaking`
-- Preferences: `['relationship', 'open-to-exploring']`
-- Era: `1`
-
-**Calculation:**
-- Intention: `100` (same)
-- Preferences: `~72` (high overlap)
-- Era: `60` (adjacent)
-
-```
-Final = (100 × 0.35) + (72 × 0.55) + (60 × 0.10)
-      = 35 + 39.6 + 6
-      = 81% compatibility
-```
-
-### Compatibility Labels
-
-| Score | Label | Color |
-|-------|-------|-------|
-| 80-100 | Great match | Green |
-| 60-79 | Good match | Light green |
-| 40-59 | Potential | Amber |
-| 0-39 | Low match | Gray |
-
-## Getting Started
-
-```bash
-# Install dependencies
-pnpm install
-
-# Start development server
-pnpm start
-
-# Run on iOS
-pnpm ios
-
-# Run on Android
-pnpm android
-```
+---
 
 ## Tech Stack
 
-- **Framework**: React Native + Expo
-- **Package Manager**: pnpm
-- **Routing**: Expo Router
-- **State**: Zustand
-- **Styling**: React Native StyleSheet
-- **Animations**: React Native Animated API
-- **Icons**: @expo/vector-icons (Ionicons)
+| | |
+|---|---|
+| Framework | React Native + Expo SDK 54 |
+| Package manager | pnpm |
+| Routing | Expo Router |
+| State | Zustand |
+| Database | Supabase (Postgres) |
+| Auth storage | expo-secure-store |
+| Styling | React Native StyleSheet |
+| Animations | React Native Animated API |
+| Icons | Ionicons + MaterialCommunityIcons |
