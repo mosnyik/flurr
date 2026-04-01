@@ -9,7 +9,7 @@ import { useUserStore } from '@/store';
 
 export default function Step6Screen() {
   const router = useRouter();
-  const { bipoc, setBipoc } = useUserStore();
+  const { identity, setIdentity } = useUserStore();
 
   const handleContinue = () => {
     router.push('/(auth)/profile-builder/step-7');
@@ -25,16 +25,16 @@ export default function Step6Screen() {
         <View style={styles.options}>
           <SelectionCard
             label="Yes"
-            selected={bipoc === true}
+            selected={identity === true}
             compact
-            onPress={() => setBipoc(true)}
+            onPress={() => setIdentity(true)}
             style={styles.card}
           />
           <SelectionCard
             label="No"
-            selected={bipoc === false}
+            selected={identity === false}
             compact
-            onPress={() => setBipoc(false)}
+            onPress={() => setIdentity(false)}
             style={styles.card}
           />
         </View>
@@ -43,7 +43,7 @@ export default function Step6Screen() {
       <ScreenFooter
         primaryLabel="let's go!"
         onPrimaryPress={handleContinue}
-        primaryDisabled={bipoc === null}
+        primaryDisabled={identity === null}
         onBackPress={() => router.back()}
       />
     </ScreenContainer>

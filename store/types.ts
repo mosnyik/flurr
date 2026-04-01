@@ -40,12 +40,13 @@ export interface UserProfile {
   name: string;
   pronouns: string[];
   intention: Intention | null;
-  matchPreferences: MatchPreference[];
+  intent: MatchPreference[];
   era: Era;
-  bipoc: boolean | null;
+  identity: boolean | null;
   presentation: Presentation | null;
-  archetypes: Archetype[];
-  drawnTo: Archetype[];
+  presentationPreference: Presentation[];
+  archetype: Archetype[];
+  archetypePreference: Archetype[];
   isOnboarded: boolean;
 }
 
@@ -55,11 +56,12 @@ export interface MatchUser {
   pronouns: string;
   imageUrl?: string;
   intention: Intention;
-  matchPreferences: MatchPreference[];
+  intent: MatchPreference[];
   era: Era;
-  bipoc?: boolean;
+  identity?: boolean;
   presentation?: Presentation;
-  archetypes?: Archetype[];
-  drawnTo?: Archetype[];
+  presentationPreference?: Presentation[];
+  archetype?: Archetype[];
+  archetypePreference?: Archetype[];
   traits: string[];
 }

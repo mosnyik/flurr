@@ -15,7 +15,7 @@ export default function HomeScreen() {
 
   const matches = useMemo(() => {
     return getMatches(user, realUsers);
-  }, [user.intention, user.matchPreferences, user.era, realUsers]);
+  }, [user.intention, user.intent, user.era, realUsers]);
 
   async function handleRefresh() {
     setRefreshing(true);

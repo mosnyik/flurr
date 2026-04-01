@@ -35,21 +35,21 @@ Go to your Supabase project → **SQL Editor** and run:
 drop table if exists profiles;
 
 create table profiles (
-  id                uuid primary key default gen_random_uuid(),
-  name              text,
-  pronouns          text[],
-  image_url         text,
-  intention         text,
-  match_preferences text[],
-  era               smallint,
-  bipoc             boolean,
-  presentation      text,
-  archetypes        text[],
-  drawn_to          text[],
-  is_onboarded      boolean default false,
-  created_at        timestamptz default now()
+  id                      uuid primary key default gen_random_uuid(),
+  name                    text,
+  pronouns                text[],
+  image_url               text,
+  intention               text,
+  match_preferences       text[],
+  era                     smallint,
+  bipoc                   boolean,
+  presentation            text,
+  presentation_preference text[],
+  archetypes              text[],
+  drawn_to                text[],
+  is_onboarded            boolean default false,
+  created_at              timestamptz default now()
 );
-
 ```
 
 ### 4. Start the app
@@ -75,12 +75,12 @@ flurr/
 │   ├── (auth)/                   # Unauthenticated flow
 │   │   ├── profile-builder/      # Onboarding steps
 │   │   │   ├── step-1.tsx        # Name & pronouns
-│   │   │   ├── step-4.tsx        # Match preferences
+│   │   │   ├── step-4.tsx        # Intent (what you're looking for)
 │   │   │   ├── step-5.tsx        # Era (dating pace)
-│   │   │   ├── step-6.tsx        # BIPOC identity
-│   │   │   ├── step-7.tsx        # Gender presentation
-│   │   │   ├── step-8.tsx        # Your archetypes
-│   │   │   └── step-9.tsx        # Archetypes you're drawn to
+│   │   │   ├── step-6.tsx        # Identity (BIPOC)
+│   │   │   ├── step-7.tsx        # Presentation (gender expression)
+│   │   │   ├── step-8.tsx        # Archetype (vibes that describe you)
+│   │   │   └── step-9.tsx        # Archetype preference (vibes you're drawn to)
 │   │   ├── index.tsx             # Welcome / sign up
 │   │   ├── verify.tsx            # OTP verification
 │   │   └── intentions.tsx        # Matchmaking vs organizer
@@ -102,6 +102,7 @@ flurr/
 │       ├── chip-input.tsx        # Tag input with auto-commit on blur
 │       ├── era-slider.tsx        # Custom pan-gesture slider
 │       ├── match-card.tsx
+│       ├── match-card-skeleton.tsx # Shimmer loading placeholder
 │       ├── selection-card.tsx    # Supports compact mode
 │       ├── archetype-card.tsx    # Card with icon + name + description
 │       ├── custom-tab-bar.tsx
@@ -110,11 +111,11 @@ flurr/
 │   └── theme.ts                  # Colors, typography, spacing
 ├── lib/
 │   ├── supabase.ts               # Supabase client (SecureStore sessions)
-│   └── useRealUsers.ts           # Fetches profiles from DB, falls back to mock
+│   └── useRealUsers.ts           # Fetches profiles from DB
 └── store/
     ├── user-store.ts             # Zustand store — profile state + Supabase save
-    ├── matching.ts               # Weighted compatibility algorithm
-    ├── mock-users.ts             # Seed / fallback user data
+    ├── matching.ts               # Compatibility algorithm (PDF spec)
+    ├── mock-users.ts             # Seed / fallback user data (commented out)
     └── types.ts                  # TypeScript types
 ```
 
@@ -122,18 +123,18 @@ flurr/
 
 ## Onboarding Flow
 
-Users go through a 7-step profile builder before reaching the main app:
+Users go through a multi-step profile builder before reaching the main app:
 
-| Step | Screen | What it captures |
-|------|--------|-----------------|
-| 1/7 | Name & Pronouns | `name`, `pronouns` |
-| 2/7 | Intentions | `intention` — matchmaking or organizer |
-| 3/7 | Match Preferences | `matchPreferences` — what they're looking for |
-| 4/7 | Era | `era` — dating pace (Gen Z / Zillenial / Millennial) |
-| 5/7 | BIPOC | `bipoc` — identity flag |
-| 6/7 | Presentation | `presentation` — gender expression |
-| 7/7 | Your Archetypes | `archetypes` — vibes that describe them |
-| 8/7 | Drawn To | `drawnTo` — archetypes they're attracted to |
+| Step | Screen | Field captured |
+|------|--------|---------------|
+| 1 | Name & Pronouns | `name`, `pronouns` |
+| 2 | Intentions | `intention` — matchmaking or organizer |
+| 3 | Intent | `intent` — what they're looking for right now |
+| 4 | Era | `era` — dating pace (Gen Z / Zillenial / Millennial) |
+| 5 | Identity | `identity` — BIPOC yes/no |
+| 6 | Presentation | `presentation` — gender expression |
+| 7 | Archetype | `archetype` — vibes that describe them |
+| 8 | Archetype Preference | `archetypePreference` — vibes they're drawn to |
 
 On completion, the full profile is saved to Supabase.
 
@@ -143,16 +144,17 @@ On completion, the full profile is saved to Supabase.
 
 ```typescript
 interface UserProfile {
-  name:             string;
-  pronouns:         string[];
-  intention:        'matchmaking' | 'organizer' | null;
-  matchPreferences: MatchPreference[];
-  era:              0 | 1 | 2;       // 0 = Gen Z, 1 = Zillenial, 2 = Millennial
-  bipoc:            boolean | null;
-  presentation:     Presentation | null;
-  archetypes:       Archetype[];
-  drawnTo:          Archetype[];
-  isOnboarded:      boolean;
+  name:                   string;
+  pronouns:               string[];
+  intention:              'matchmaking' | 'organizer' | null;
+  intent:                 MatchPreference[];
+  era:                    0 | 1 | 2;       // 0 = Gen Z, 1 = Zillenial, 2 = Millennial
+  identity:               boolean | null;
+  presentation:           Presentation | null;
+  presentationPreference: Presentation[];
+  archetype:              Archetype[];
+  archetypePreference:    Archetype[];
+  isOnboarded:            boolean;
 }
 ```
 
@@ -160,29 +162,19 @@ interface UserProfile {
 
 ## Matching Algorithm
 
-Compatibility is calculated across three weighted factors:
+Compatibility is scored across 6 signals with a maximum of **31 points**, converted to a percentage.
 
-| Factor | Weight | Description |
-|--------|--------|-------------|
-| Intention | 35% | Must share the same intention to score |
-| Preferences | 55% | How well their desired connections align |
-| Era | 10% | Dating pace compatibility |
-
-### Preference compatibility matrix (excerpt)
-
-|  | romantic-partner | relationship | open-to-exploring | a-good-time |
-|--|-----------------|--------------|-------------------|-------------|
-| **romantic-partner** | 100 | 90 | 60 | 30 |
-| **relationship** | 90 | 100 | 40 | 25 |
-| **open-to-exploring** | 70 | 40 | 100 | 80 |
-| **a-good-time** | 50 | 15 | 80 | 100 |
-
-### Era score
+| Signal | Max points | Scoring |
+|--------|-----------|---------|
+| Intent | 9 | All selections match → 9, at least one overlap → 5, none → 0 |
+| Identity | 7 | Same answer → 7, different → 0 |
+| Presentation | 7 | Same → 7, different → 0 |
+| Presentation preference bonus | +1 | A's presentation in B's preference AND B's in A's → +1 |
+| Archetype | 6 | Share at least one archetype → 6, none → 0 |
+| Archetype preference bonus | +1 | A's archetype in B's drawnTo AND B's in A's → +1 |
 
 ```
-Same era (0 diff)   → 100
-Adjacent (1 diff)   → 60
-Far apart (2 diff)  → 20
+Match % = total points / 31
 ```
 
 ### Compatibility labels
@@ -203,7 +195,7 @@ Flurr uses [Zustand](https://github.com/pmndrs/zustand) for local state. On `com
 ```typescript
 import { useUserStore } from '@/store';
 
-const { name, setName, matchPreferences } = useUserStore();
+const { name, setName, intent, setIntent } = useUserStore();
 ```
 
 ---
@@ -219,5 +211,5 @@ const { name, setName, matchPreferences } = useUserStore();
 | Database | Supabase (Postgres) |
 | Auth storage | expo-secure-store |
 | Styling | React Native StyleSheet |
-| Animations | React Native Animated API |
+| Animations | React Native Animated API + Reanimated |
 | Icons | Ionicons + MaterialCommunityIcons |

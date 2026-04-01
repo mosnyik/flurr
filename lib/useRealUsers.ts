@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from './supabase';
-import { MatchUser, MatchPreference, Intention, Era } from '@/store/types';
+import { MatchUser, MatchPreference, Intention, Era, Presentation, Archetype } from '@/store/types';
 
 export function useRealUsers(excludeName?: string) {
   const [users, setUsers] = useState<MatchUser[]>([]);
@@ -31,12 +31,13 @@ export function useRealUsers(excludeName?: string) {
         pronouns: Array.isArray(row.pronouns) ? row.pronouns.join('/') : row.pronouns ?? '',
         imageUrl: row.image_url ?? undefined,
         intention: (row.intention ?? 'matchmaking') as Intention,
-        matchPreferences: (row.match_preferences ?? []) as MatchPreference[],
+        intent: (row.match_preferences ?? []) as MatchPreference[],
         era: (row.era ?? 1) as Era,
-        bipoc: row.bipoc ?? undefined,
+        identity: row.bipoc ?? undefined,
         presentation: row.presentation ?? undefined,
-        archetypes: row.archetypes ?? undefined,
-        drawnTo: row.drawn_to ?? undefined,
+        presentationPreference: [],
+        archetype: (row.archetypes ?? []) as Archetype[],
+        archetypePreference: (row.drawn_to ?? []) as Archetype[],
         traits: [
           ...(row.presentation ? [row.presentation] : []),
           ...(row.archetypes ?? []),

@@ -26,13 +26,13 @@ const ARCHETYPES: { id: Archetype; icon: React.ReactNode; title: string; descrip
 
 export default function Step9Screen() {
   const router = useRouter();
-  const { drawnTo, setDrawnTo, completeOnboarding } = useUserStore();
+  const { archetypePreference, setArchetypePreference, completeOnboarding } = useUserStore();
 
   const toggle = (id: Archetype) => {
-    if (drawnTo.includes(id)) {
-      setDrawnTo(drawnTo.filter((a) => a !== id));
+    if (archetypePreference.includes(id)) {
+      setArchetypePreference(archetypePreference.filter((a) => a !== id));
     } else {
-      setDrawnTo([...drawnTo, id]);
+      setArchetypePreference([...archetypePreference, id]);
     }
   };
 
@@ -57,7 +57,7 @@ export default function Step9Screen() {
               icon={a.icon}
               title={a.title}
               description={a.description}
-              selected={drawnTo.includes(a.id)}
+              selected={archetypePreference.includes(a.id)}
               onPress={() => toggle(a.id)}
             />
           ))}
@@ -67,7 +67,7 @@ export default function Step9Screen() {
       <ScreenFooter
         primaryLabel="continue"
         onPrimaryPress={handleContinue}
-        primaryDisabled={drawnTo.length === 0}
+        primaryDisabled={archetypePreference.length === 0}
         onBackPress={() => router.back()}
       />
     </ScreenContainer>

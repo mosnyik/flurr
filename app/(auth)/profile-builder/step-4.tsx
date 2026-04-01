@@ -27,13 +27,13 @@ const OPTIONS: { id: MatchPreference; label: string; icon?: keyof typeof Ionicon
 
 export default function Step4Screen() {
   const router = useRouter();
-  const { matchPreferences, setMatchPreferences } = useUserStore();
+  const { intent, setIntent } = useUserStore();
 
   const toggleSelection = (id: MatchPreference) => {
-    if (matchPreferences.includes(id)) {
-      setMatchPreferences(matchPreferences.filter((s) => s !== id));
+    if (intent.includes(id)) {
+      setIntent(intent.filter((s) => s !== id));
     } else {
-      setMatchPreferences([...matchPreferences, id]);
+      setIntent([...intent, id]);
     }
   };
 
@@ -53,7 +53,7 @@ export default function Step4Screen() {
               label={option.label}
               iconName={option.icon}
               icon={option.customIcon}
-              selected={matchPreferences.includes(option.id)}
+              selected={intent.includes(option.id)}
               onPress={() => toggleSelection(option.id)}
               style={styles.card}
             />
@@ -64,7 +64,7 @@ export default function Step4Screen() {
       <ScreenFooter
         primaryLabel="continue"
         onPrimaryPress={() => router.push('/(auth)/profile-builder/step-5')}
-        primaryDisabled={matchPreferences.length === 0}
+        primaryDisabled={intent.length === 0}
         onBackPress={() => router.back()}
       />
     </ScreenContainer>

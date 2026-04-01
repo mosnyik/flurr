@@ -3,16 +3,16 @@ import { UserProfile, Intention, MatchPreference, Era, Presentation, Archetype }
 import { supabase } from '@/lib/supabase';
 
 interface UserState extends UserProfile {
-  // Actions
   setName: (name: string) => void;
   setPronouns: (pronouns: string[]) => void;
   setIntention: (intention: Intention) => void;
-  setMatchPreferences: (preferences: MatchPreference[]) => void;
+  setIntent: (intent: MatchPreference[]) => void;
   setEra: (era: Era) => void;
-  setBipoc: (bipoc: boolean) => void;
+  setIdentity: (identity: boolean) => void;
   setPresentation: (presentation: Presentation) => void;
-  setArchetypes: (archetypes: Archetype[]) => void;
-  setDrawnTo: (drawnTo: Archetype[]) => void;
+  setPresentationPreference: (presentationPreference: Presentation[]) => void;
+  setArchetype: (archetype: Archetype[]) => void;
+  setArchetypePreference: (archetypePreference: Archetype[]) => void;
   completeOnboarding: () => void;
   reset: () => void;
 }
@@ -21,12 +21,13 @@ const initialState: UserProfile = {
   name: '',
   pronouns: [],
   intention: null,
-  matchPreferences: [],
+  intent: [],
   era: 1,
-  bipoc: null,
+  identity: null,
   presentation: null,
-  archetypes: [],
-  drawnTo: [],
+  presentationPreference: [],
+  archetype: [],
+  archetypePreference: [],
   isOnboarded: false,
 };
 
@@ -34,22 +35,15 @@ export const useUserStore = create<UserState>((set) => ({
   ...initialState,
 
   setName: (name) => set({ name }),
-
   setPronouns: (pronouns) => set({ pronouns }),
-
   setIntention: (intention) => set({ intention }),
-
-  setMatchPreferences: (matchPreferences) => set({ matchPreferences }),
-
+  setIntent: (intent) => set({ intent }),
   setEra: (era) => set({ era }),
-
-  setBipoc: (bipoc) => set({ bipoc }),
-
+  setIdentity: (identity) => set({ identity }),
   setPresentation: (presentation) => set({ presentation }),
-
-  setArchetypes: (archetypes) => set({ archetypes }),
-
-  setDrawnTo: (drawnTo) => set({ drawnTo }),
+  setPresentationPreference: (presentationPreference) => set({ presentationPreference }),
+  setArchetype: (archetype) => set({ archetype }),
+  setArchetypePreference: (archetypePreference) => set({ archetypePreference }),
 
   completeOnboarding: () => {
     set({ isOnboarded: true });
@@ -58,12 +52,13 @@ export const useUserStore = create<UserState>((set) => ({
       name: state.name,
       pronouns: state.pronouns,
       intention: state.intention,
-      match_preferences: state.matchPreferences,
+      match_preferences: state.intent,
       era: state.era,
-      bipoc: state.bipoc,
+      bipoc: state.identity,
       presentation: state.presentation,
-      archetypes: state.archetypes,
-      drawn_to: state.drawnTo,
+      presentation_preference: state.presentationPreference,
+      archetypes: state.archetype,
+      drawn_to: state.archetypePreference,
       is_onboarded: true,
     }).then(({ error }) => {
       if (error) console.error('[Supabase] Failed to save profile:', error.message);

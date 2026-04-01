@@ -27,13 +27,13 @@ const ARCHETYPES: { id: Archetype; icon: React.ReactNode; title: string; descrip
 
 export default function Step8Screen() {
   const router = useRouter();
-  const { archetypes, setArchetypes } = useUserStore();
+  const { archetype, setArchetype } = useUserStore();
 
   const toggle = (id: Archetype) => {
-    if (archetypes.includes(id)) {
-      setArchetypes(archetypes.filter((a) => a !== id));
+    if (archetype.includes(id)) {
+      setArchetype(archetype.filter((a) => a !== id));
     } else {
-      setArchetypes([...archetypes, id]);
+      setArchetype([...archetype, id]);
     }
   };
 
@@ -57,7 +57,7 @@ export default function Step8Screen() {
               icon={a.icon}
               title={a.title}
               description={a.description}
-              selected={archetypes.includes(a.id)}
+              selected={archetype.includes(a.id)}
               onPress={() => toggle(a.id)}
             />
           ))}
@@ -67,7 +67,7 @@ export default function Step8Screen() {
       <ScreenFooter
         primaryLabel="continue"
         onPrimaryPress={handleContinue}
-        primaryDisabled={archetypes.length === 0}
+        primaryDisabled={archetype.length === 0}
         onBackPress={() => router.back()}
       />
     </ScreenContainer>
