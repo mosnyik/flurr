@@ -46,23 +46,10 @@ create table profiles (
   presentation      text,
   archetypes        text[],
   drawn_to          text[],
-  traits            text[],
   is_onboarded      boolean default false,
   created_at        timestamptz default now()
 );
 
--- Seed mock users
-insert into profiles (id, name, pronouns, image_url, intention, match_preferences, era, traits, is_onboarded) values
-  ('00000000-0000-0000-0000-000000000001', 'TRACEY', array['she','her'],  'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['romantic-partner','relationship','open-to-exploring'], 2, array['prefers 1:1','long walks','birding','slow replies ok','friends first'], true),
-  ('00000000-0000-0000-0000-000000000002', 'SEYI',   array['she','they'], 'https://images.unsplash.com/photo-1589156280159-27698a70f29e?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['open-to-exploring','relationship','new-bestie'],              1, array['deep convos pls','calling > texting','beach life','loves to host'],        true),
-  ('00000000-0000-0000-0000-000000000003', 'DANI',   array['any'],        'https://images.unsplash.com/photo-1523824921871-d6f1a15151f1?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['a-good-time','someone-to-go-out-with','open-to-exploring'],   0, array['goofy','no strings','enm','here for a good time','not a long time'],       true),
-  ('00000000-0000-0000-0000-000000000004', 'HAYDEN', array['they','them'],'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['new-bestie','someone-to-go-out-with'],                       1, array['foodie','open','platonic vibes','museum dates'],                           true),
-  ('00000000-0000-0000-0000-000000000005', 'ALEX',   array['he','they'],  'https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['romantic-partner','relationship','new-bestie'],               2, array['bookworm','coffee addict','vinyl collector','slow mornings'],               true),
-  ('00000000-0000-0000-0000-000000000006', 'JORDAN', array['they','them'],'https://images.unsplash.com/photo-1534614971-6be99a7a3ffd?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['someone-to-go-out-with','a-good-time','new-bestie'],           0, array['night owl','festival goer','spontaneous','dance floors'],                   true),
-  ('00000000-0000-0000-0000-000000000007', 'RILEY',  array['she','her'],  'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['relationship','romantic-partner'],                            2, array['homebody','plant parent','cozy vibes','sunday brunches'],                   true),
-  ('00000000-0000-0000-0000-000000000008', 'SAM',    array['he','him'],   'https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['new-bestie','someone-to-go-out-with','open-to-exploring'],   1, array['gym bro','hiking enthusiast','dog dad','brunch crew'],                      true),
-  ('00000000-0000-0000-0000-000000000009', 'QUINN',  array['they','them'],'https://images.unsplash.com/photo-1507152927562-7d5e1f2a537a?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['a-good-time','open-to-exploring','someone-to-go-out-with'], 0, array['late nights','no labels','fwb energy','keep it light'],                     true),
-  ('00000000-0000-0000-0000-000000000010', 'MORGAN', array['she','her'],  'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=200&h=200&fit=crop&crop=face', 'matchmaking', array['open-to-exploring','relationship','a-good-time'],            1, array['see where it goes','genuine connections','vibes first','no rush'],          true);
 ```
 
 ### 4. Start the app
