@@ -49,7 +49,7 @@ export interface UserProfile {
   isOnboarded: boolean;
 }
 
-export interface MockUser {
+export interface MatchUser {
   id: string;
   name: string;
   pronouns: string;

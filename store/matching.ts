@@ -1,7 +1,7 @@
-import { UserProfile, MockUser, MatchPreference, Intention } from './types';
+import { UserProfile, MatchUser, MatchPreference, Intention } from './types';
 
 export interface MatchResult {
-  user: MockUser;
+  user: MatchUser;
   compatibility: number; // 0-100
   breakdown: {
     intentionScore: number;
@@ -138,7 +138,7 @@ function calculateEraScore(userEra: number, matchEra: number): number {
  */
 export function calculateCompatibility(
   user: UserProfile,
-  match: MockUser
+  match: MatchUser
 ): MatchResult {
   // Calculate individual scores (0-100 each)
   const intentionScore = calculateIntentionScore(user.intention, match.intention);
@@ -168,7 +168,7 @@ export function calculateCompatibility(
  */
 export function getMatches(
   user: UserProfile,
-  mockUsers: MockUser[]
+  mockUsers: MatchUser[]
 ): MatchResult[] {
   // Calculate compatibility for each user
   const matches = mockUsers.map((m) => calculateCompatibility(user, m));

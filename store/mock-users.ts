@@ -1,6 +1,6 @@
-import { MockUser } from "./types";
+import { MatchUser } from "./types";
 
-export const MOCK_USERS: MockUser[] = [
+export const MOCK_USERS: MatchUser[] = [
   // Serious relationship seeker (converges toward commitment)
   {
     id: "1",
