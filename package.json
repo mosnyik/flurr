@@ -2,7 +2,9 @@
   "name": "flurr",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "packageManager": "pnpm@10.29.3",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
